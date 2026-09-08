@@ -1,0 +1,1001 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Guideway</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+<style>
+:root{
+  color-scheme: light;
+
+  /* Brand primaries */
+  --gw-blue:#1B75BC;
+  --gw-green:#3AAA35;
+  --gw-navy:#12284C;
+  --gw-gradient:linear-gradient(90deg,#1B75BC 0%,#3AAA35 100%);
+
+  /* Supporting palette */
+  --action-blue:#2E6FD6;
+  --teal:#1F9E8F;
+  --amber:#E8A33D;
+  --red:#D64550;
+  --slate:#6B7A8D;
+  --slate-soft:#EDF0F3;
+  --navy-soft:#E4E9F2;
+
+  /* Text-safe darker variants (WCAG 2.1 AA) */
+  --amber-text:#8A5D06;
+  --green-text:#186A3B;
+  --red-text:#8B1E28;
+  --slate-text:#4A5566;
+
+  /* Level progression — monochrome blue-to-green, never red-to-green */
+  --lvl-1:#0F4C81;
+  --lvl-2:#1B75BC;
+  --lvl-3:#3E9BAF;
+  --lvl-4:#3AAA35;
+  --lvl-5:#0F7A2C;
+
+  /* Text-safe level variants. lvl-3 and lvl-4 fail AA as text at full
+     saturation (3.23:1 and 3.01:1), so the pure hue is used only as the
+     decorative rail and these carry the label. */
+  --lvl-1-text:#0F4C81;
+  --lvl-2-text:#1B75BC;
+  --lvl-3-text:#2E7386;
+  --lvl-4-text:#186A3B;
+  --lvl-5-text:#0F7A2C;
+
+  /* Surfaces */
+  --ground:#F0F2F5;
+  --surface:#FFFFFF;
+  --line:#E0E4E8;
+  --ink:#222222;
+
+  --amber-soft:#FDF3E3;
+  /* Warm neutral for the honest-status rows. Not in the brand spec: the
+     palette is entirely cool, so slate-soft rows sat at 1.01:1 against the
+     page ground and read as one flat block. Warm, deliberately not amber —
+     this section is disclosure, not a warning state. */
+  --beige:#F0E8D9;
+  --beige-line:#E2D8C4;
+  --shadow:0 2px 8px rgba(18,40,76,.08);
+
+  --sans:'Inter','Calibri','Segoe UI',sans-serif;
+  --max:1200px;
+  --radius:4px;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3{margin:0; line-height:1.25; text-wrap:balance; color:var(--gw-navy)}
+h1{font-size:32px; font-weight:700; letter-spacing:-.2px}
+h2{font-size:22px; font-weight:700}
+h3{font-size:16px; font-weight:700}
+p{margin:0}
+a{color:var(--gw-blue)}
+:focus-visible{outline:2px solid var(--action-blue); outline-offset:2px; border-radius:2px}
+
+.wrap{width:min(100% - 40px,var(--max)); margin-inline:auto}
+.col{max-width:66ch}
+.stack{display:flex; flex-direction:column; gap:16px}
+
+.kicker{
+  font-size:11px; font-weight:600; text-transform:uppercase;
+  letter-spacing:1.5px; color:var(--slate-text); margin:0;
+}
+.lede{font-size:17px; line-height:1.55; color:var(--slate-text)}
+.body{color:var(--slate-text); max-width:66ch}
+
+/* ---- brand moments: the gradient is decorative, never data ---- */
+.gradient-rule{height:3px; background:var(--gw-gradient); border:0; margin:0}
+
+/* ---- draft banner ---- */
+.draft{background:var(--amber-soft); border-bottom:1px solid #F0DCB4; color:var(--amber-text)}
+.draft .wrap{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; padding:10px 0; font-size:13px}
+.draft strong{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1.2px}
+
+/* ---- header ---- */
+header{background:var(--surface); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:10}
+/* Logo, links and CTA share one row. nowrap keeps the button on the nav line
+   instead of dropping it beneath; below the tablet breakpoint it wraps. */
+header .wrap{display:flex; align-items:center; gap:24px; padding:12px 0; flex-wrap:nowrap}
+.logo{
+  font-size:20px; font-weight:700; letter-spacing:.2px; white-space:nowrap;
+  background:var(--gw-gradient); -webkit-background-clip:text; background-clip:text;
+  color:transparent; -webkit-text-fill-color:transparent;
+}
+header nav{margin-left:auto; min-width:0}
+nav ul{display:flex; gap:18px; list-style:none; margin:0; padding:0}
+nav a{color:var(--slate-text); text-decoration:none; font-size:13px; font-weight:600; white-space:nowrap}
+nav a:hover{color:var(--gw-blue)}
+header .btn{flex:none; white-space:nowrap}
+
+/* ---- buttons ---- */
+.btn{
+  display:inline-block; font:inherit; font-size:14px; font-weight:600;
+  background:var(--gw-blue); color:#fff; border:1px solid var(--gw-blue);
+  padding:10px 20px; border-radius:var(--radius); text-decoration:none; cursor:pointer;
+  transition:background .15s ease, border-color .15s ease;
+}
+.btn:hover{background:#186AA9; border-color:#186AA9}
+.btn-secondary{background:var(--surface); color:var(--gw-blue)}
+.btn-secondary:hover{background:var(--navy-soft); color:var(--gw-blue)}
+
+/* ---- sections ---- */
+section{padding:80px 0}
+.band-white{background:var(--surface); border-block:1px solid var(--line)}
+
+/* ---- hero ---- */
+.hero{background:var(--surface); border-bottom:1px solid var(--line); padding:64px 0 56px}
+.hero h1{max-width:20ch; margin-bottom:16px}
+/* "guide" carries the wordmark's exact gradient — the one brand moment in the
+   page's type, and the same --gw-gradient the logo uses. color: is declared
+   first and the clip is @supports-gated, so the word still renders if
+   background-clip:text is unavailable rather than going invisible. */
+.hero h1 em{font-style:normal; font-size:1.15em; color:var(--gw-blue)}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .hero h1 em{
+    background:var(--gw-gradient);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+}
+.hero .lede{max-width:60ch}
+.hero-cta{display:flex; gap:12px; margin-top:28px; flex-wrap:wrap}
+.hero-grid{display:grid; gap:40px; grid-template-columns:1fr; align-items:center}
+.hero-trust{display:flex; flex-wrap:wrap; gap:8px 20px; margin:20px 0 0; padding:0; list-style:none; font-size:13px; color:var(--slate-text)}
+.hero-trust li{display:flex; align-items:center; gap:8px}
+.hero-trust li::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--gw-green); flex:none}
+
+/* Concept preview: a sketch of the participant view, not a screenshot. The
+   assessment and journey are Designed, not Built, so this is labelled as an
+   illustration and shows no real person and no real data. */
+.mock{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  box-shadow:0 12px 40px rgba(18,40,76,.12); overflow:hidden; font-size:13px; max-width:520px; justify-self:end; width:100%;
+}
+.mock-bar{display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--slate-soft); border-bottom:1px solid var(--line)}
+.mock-bar i{width:9px; height:9px; border-radius:50%; background:#C9D1DB; display:block}
+.mock-bar span{margin-left:auto; font-size:11px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase; color:var(--amber-text); background:var(--amber-soft); padding:2px 8px; border-radius:20px}
+.mock-body{padding:16px 18px}
+.mock-head{display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:12px}
+.mock-head strong{font-size:15px; color:var(--gw-navy)}
+.mock-head span{color:var(--slate-text); font-size:12px}
+.mock-rows{display:flex; flex-direction:column; gap:6px}
+.mock-row{display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center; padding:9px 12px; border:1px solid var(--line); border-radius:var(--radius); border-left:3px solid var(--lv)}
+.mock-row b{font-weight:600; color:var(--gw-navy)}
+.mock-row em{font-style:normal; font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--lv-text)}
+.mock-next{margin-top:12px; padding:11px 12px; background:var(--navy-soft); border-radius:var(--radius); display:grid; gap:2px}
+.mock-next small{font-size:11px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase; color:var(--slate-text)}
+.mock-next b{color:var(--gw-navy); font-weight:600}
+.mock-next span{color:var(--slate-text); font-size:12px}
+
+/* three pillars under the hero mirror the three moves in How it works */
+.pillars{display:grid; gap:16px; grid-template-columns:1fr; margin-top:48px; padding-top:32px; border-top:1px solid var(--line)}
+.pillars a{display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; text-decoration:none; color:inherit; padding:4px 0}
+.pillars .num{font-size:11px; font-weight:700; letter-spacing:1.2px; color:var(--gw-blue); padding-top:3px}
+.pillars b{display:block; color:var(--gw-navy); font-size:15px; margin-bottom:2px}
+.pillars span{color:var(--slate-text); font-size:14px}
+.pillars a:hover b{color:var(--gw-blue)}
+
+/* ---- cards ---- */
+.grid{display:grid; gap:24px; grid-template-columns:1fr}
+.card{
+  background:var(--surface); border:1px solid var(--line);
+  border-top:3px solid var(--gw-blue); border-radius:var(--radius);
+  padding:20px 24px; transition:box-shadow .15s ease;
+  display:flex; flex-direction:column; gap:8px;
+}
+.card:hover{box-shadow:var(--shadow)}
+.card p{color:var(--slate-text); font-size:14px}
+.card .n{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1.2px; color:var(--slate-text)}
+
+/* four stages: a brand-family set, NOT a good-to-better ramp — people move
+   in both directions, so no progression palette here. */
+.stage{border-top-color:var(--stage-color)}
+.stage .ord{font-size:11px; font-weight:600; letter-spacing:1.2px; color:var(--slate-text)}
+/* stage h3 stays navy: teal (3.31:1) and green (3.01:1) fail AA at 16px bold.
+   Stage identity lives in the top rail and the "Stage 0N" label instead. */
+
+.card .ico{width:22px; height:22px; stroke:var(--gw-blue); stroke-width:1.75; fill:none;
+  stroke-linecap:round; stroke-linejoin:round; display:block; margin-bottom:4px}
+
+/* ---- plain two-up prose ---- */
+.sub h3{margin-bottom:8px}
+.sub p{color:var(--slate-text)}
+
+/* ---- the arc: an encompassing theme, not a scale. No ordinals, no colour
+   ramp — both would make it read as a progression to be placed on. ---- */
+.arc{display:grid; gap:24px; grid-template-columns:1fr}
+.arc > div{border-left:2px solid var(--slate); padding-left:16px}
+.arc h3{font-size:15px; margin-bottom:6px}
+.arc p{color:var(--slate-text); font-size:14px}
+
+/* ---- pull quote ---- */
+.pull{margin:0; padding:0; max-width:60ch}
+.pull blockquote{
+  margin:0; font-size:19px; font-weight:600; line-height:1.45; color:var(--gw-navy);
+  border-left:3px solid var(--gw-blue); padding-left:16px;
+}
+.pull figcaption{font-size:13px; color:var(--slate-text); margin-top:10px; padding-left:19px}
+
+/* ---- pills: fifteen areas ---- */
+/* align-items:flex-start stops a wrapped pill from stretching its whole
+   row; nowrap keeps the long area names on one line so every pill is the
+   same height. */
+.areas{display:flex; flex-wrap:wrap; align-items:flex-start; gap:8px; padding:0; list-style:none; margin:0}
+.areas li{
+  font-size:11px; font-weight:600; padding:5px 12px; border-radius:20px;
+  background:var(--surface); border:1px solid var(--line); color:var(--slate-text);
+  white-space:nowrap; line-height:1.5;
+}
+.areas li.sample{background:var(--navy-soft); border-color:#C7D3E6; color:#14588F}
+.areas li.pending{color:var(--slate-text); font-style:italic}
+
+/* ---- sample picker ---- */
+.picker{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 16px}
+.picker button{
+  font:inherit; font-size:13px; font-weight:600; cursor:pointer;
+  background:var(--surface); border:1px solid var(--gw-blue); color:var(--gw-blue);
+  padding:8px 16px; border-radius:var(--radius);
+}
+.picker button:hover{background:var(--navy-soft)}
+.picker button[aria-pressed="true"]{background:var(--gw-blue); color:#fff}
+
+/* ---- level ladder ---- */
+.panel{background:var(--surface); border:1px solid var(--line); border-top:3px solid var(--gw-blue); border-radius:var(--radius); padding:20px 24px}
+.panel-head{padding-bottom:16px; margin-bottom:16px; border-bottom:1px solid var(--line)}
+.panel-head .q{font-size:17px; font-weight:700; color:var(--gw-navy); line-height:1.35; margin-top:8px}
+.rungs{display:flex; flex-direction:column; gap:8px}
+.rung{
+  display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:baseline;
+  background:var(--surface); border:1px solid var(--line);
+  border-left:4px solid var(--lv); border-radius:var(--radius); padding:12px 16px;
+}
+.rung .num{font-size:11px; font-weight:700; letter-spacing:1.2px; color:var(--lv-text); white-space:nowrap; font-variant-numeric:tabular-nums}
+.rung .lab{font-size:14px; font-weight:700; color:var(--lv-text); display:block}
+.rung .desc{color:var(--slate-text); font-size:14px; display:block; margin-top:2px}
+
+/* ---- what changes ---- */
+.notlist{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px}
+.notlist li{
+  background:var(--surface); border:1px solid var(--line);
+  border-left:3px solid var(--gw-green); border-radius:var(--radius); padding:16px 20px;
+}
+.notlist strong{display:block; margin-bottom:4px; color:var(--gw-navy); font-size:15px}
+.notlist span{color:var(--slate-text); font-size:14px}
+
+/* ---- features: comparison table ---- */
+/* Every Guideway cell carries a build state. Built = evidenced in the Power
+   App today; Designed = content written, no screen yet. An unmarked check on
+   a site aimed at funders reads as a claim about what exists. The
+   "traditional" column describes the common shape of activity-based case
+   management, never a named product. */
+.st{
+  display:inline-block; font-size:11px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase;
+  padding:3px 10px; border-radius:20px; line-height:1.5; white-space:nowrap;
+}
+.st.built{background:var(--navy-soft); color:#14588F}
+.st.designed{background:var(--slate-soft); color:var(--slate-text)}
+.st.out{background:var(--beige); color:var(--slate-text)}
+.feat-key{display:flex; flex-wrap:wrap; gap:12px 24px; margin:0 0 16px; padding:0; list-style:none; font-size:13px; color:var(--slate-text)}
+.feat-key li{display:flex; align-items:center; gap:8px}
+
+.cmp{
+  border-collapse:separate; border-spacing:0; width:100%; min-width:720px; font-size:14px;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+}
+.cmp th,.cmp td{text-align:left; padding:13px 18px; border-bottom:1px solid var(--line); vertical-align:top}
+.cmp tbody tr:last-child th,.cmp tbody tr:last-child td{border-bottom:0}
+.cmp col.c-cap{width:44%}
+.cmp col.c-trad,.cmp col.c-gw{width:28%}
+.cmp thead th{
+  font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1.2px;
+  color:var(--slate-text); border-bottom:1px solid var(--slate); padding-top:16px; padding-bottom:14px;
+}
+.cmp thead th.gw{
+  color:var(--gw-navy); background:var(--navy-soft);
+  box-shadow:inset 0 3px 0 var(--gw-blue);
+}
+.cmp thead th.gw .brand{
+  display:block; font-size:16px; letter-spacing:.2px; text-transform:none; margin-bottom:2px;
+  background:var(--gw-gradient); -webkit-background-clip:text; background-clip:text;
+  color:var(--gw-blue); -webkit-text-fill-color:transparent;
+}
+.cmp td.gw{background:#F7F9FC}
+.cmp tbody th{font-weight:600; color:var(--gw-navy)}
+.cmp tbody th small{display:block; font-weight:400; color:var(--slate-text); font-size:13px; margin-top:2px}
+.cmp tr.grp th{
+  background:var(--slate-soft); font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1.2px;
+  color:var(--slate-text); padding:8px 18px;
+}
+.cmp td{color:var(--slate-text)}
+.cmp .cell{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.cmp .g{display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; flex:none; font-weight:700; font-size:13px}
+.cmp .g.yes{background:#E3F3E4; color:var(--green-text)}
+.cmp .g.part{background:var(--amber-soft); color:var(--amber-text)}
+.cmp .g.no{background:var(--slate-soft); color:var(--slate)}
+.cmp td.gw .g.yes{background:var(--gw-green); color:#fff}
+
+/* ---- honest status ---- */
+.status{display:flex; flex-direction:column; gap:8px; margin:0}
+.status div{
+  display:grid; grid-template-columns:11rem 1fr; gap:20px;
+  background:var(--beige); border:1px solid var(--beige-line);
+  border-radius:var(--radius); padding:12px 16px;
+}
+.status dt{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1.2px; color:var(--slate-text)}
+.status dd{margin:0; color:var(--slate-text); font-size:14px}
+
+/* ---- traction: scorecard, states, distribution ---- */
+.sample{
+  background:var(--amber-soft); color:var(--amber-text); border-radius:var(--radius);
+  padding:10px 14px; font-size:13px; margin-bottom:16px;
+}
+.visually-hidden{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
+.scroll-x{overflow-x:auto; -webkit-overflow-scrolling:touch}
+.sample a{color:#14588F}
+.score{border-collapse:collapse; width:100%; min-width:640px; font-size:14px}
+.score th,.score td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--line); white-space:nowrap}
+.score thead th{
+  font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1.2px;
+  color:var(--slate-text); border-bottom:1px solid var(--slate);
+}
+.score tbody th{font-weight:700; color:var(--gw-navy); white-space:normal}
+.score td{color:var(--slate-text)}
+/* Movement carries no hue. D11's guardrail bars red framing for downward
+   movement and the brand rules bar amber/red from participant judgement, so
+   direction is carried by the glyph and the words — which also makes every
+   down as visible as every up (G7). */
+.score .mv{color:var(--gw-navy); font-weight:600}
+.score .mv .ar{display:inline-block; width:1.1em; font-weight:700}
+
+.states{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px}
+.states li{
+  display:grid; grid-template-columns:1.6em 1fr; gap:12px; align-items:baseline;
+  background:var(--slate-soft); border-radius:var(--radius); padding:10px 14px;
+}
+.states .ar{font-weight:700; color:var(--gw-navy); text-align:center}
+.states strong{color:var(--gw-navy); font-size:14px}
+.states span{color:var(--slate-text); font-size:14px}
+
+.dist{display:flex; width:100%; min-width:520px; border-radius:var(--radius); overflow:hidden}
+.dist div{height:34px}
+.distkey{list-style:none; padding:0; margin:12px 0 0; display:flex; flex-wrap:wrap; gap:8px 18px}
+.distkey li{display:flex; gap:8px; align-items:center; font-size:13px; color:var(--slate-text)}
+.distkey i{width:11px; height:11px; border-radius:2px; flex:none}
+
+.views{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0}
+.views li{display:grid; grid-template-columns:1fr; gap:4px; padding:14px 0; border-bottom:1px solid var(--line)}
+.views li:first-child{border-top:1px solid var(--line)}
+.views .who{font-weight:700; color:var(--gw-navy); font-size:14px}
+.views .sees{color:var(--slate-text); font-size:14px}
+
+/* ---- reading list ---- */
+.reading{list-style:none; padding:0; margin:0; display:flex; flex-direction:column}
+.reading li{display:grid; grid-template-columns:1fr; gap:4px; padding:14px 0; border-bottom:1px solid var(--line)}
+.reading li:first-child{border-top:1px solid var(--line)}
+.reading .src{font-weight:700; color:var(--gw-navy); font-size:14px}
+.reading .src em{font-style:italic; font-weight:400; color:var(--slate-text)}
+.reading .use{color:var(--slate-text); font-size:14px}
+
+/* ---- form ---- */
+.formwrap{background:var(--surface); border:1px solid var(--line); border-top:3px solid var(--gw-blue); border-radius:var(--radius); padding:20px 24px}
+.formnote{
+  background:var(--amber-soft); color:var(--amber-text); border-radius:var(--radius);
+  padding:10px 14px; font-size:13px; margin-bottom:20px;
+}
+.field{display:flex; flex-direction:column; gap:6px; margin-bottom:16px}
+.field label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1.2px; color:var(--slate-text)}
+.field input,.field textarea{
+  font:inherit; font-size:15px; color:var(--ink); background:var(--surface);
+  border:1px solid var(--line); border-radius:var(--radius); padding:9px 12px; width:100%;
+}
+.field textarea{min-height:100px; resize:vertical}
+.hint{font-size:12px; color:var(--slate-text)}
+
+/* ---- footer ---- */
+footer{background:var(--gw-navy); color:#C6D2E4; padding:32px 0; font-size:13px}
+footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wrap}
+
+/* ---- responsive ---- */
+@media(min-width:721px){
+  .reading li{grid-template-columns:minmax(0,22rem) 1fr; gap:24px; align-items:baseline}
+  .views li{grid-template-columns:minmax(0,16rem) 1fr; gap:24px; align-items:baseline}
+  .arc{grid-template-columns:repeat(2,1fr)}
+  .grid-2{grid-template-columns:repeat(2,1fr)}
+}
+@media(min-width:1025px){
+  .hero-grid{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+  .pillars{grid-template-columns:repeat(3,1fr); gap:32px}
+  .arc{grid-template-columns:repeat(4,1fr)}
+  .grid-3{grid-template-columns:repeat(3,1fr)}
+  .grid-4{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:1024px){
+  header .wrap{flex-wrap:wrap; gap:12px 20px}
+  header nav{margin-left:0; order:3; width:100%}
+  .logo{margin-right:auto}
+  nav ul{flex-wrap:wrap}
+}
+@media(max-width:720px){
+  .areas li{white-space:normal}
+  section{padding:48px 0}
+  .hero{padding:40px 0 36px}
+  .status div{grid-template-columns:1fr; gap:4px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important; animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="draft">
+  <div class="wrap">
+    <strong>Draft</strong>
+    <span>Internal review only — not for publication. Built to the Guideway design system; positioning and copy are pending review.</span>
+  </div>
+</div>
+
+<header>
+  <div class="wrap">
+    <div class="logo">GUIDEWAY</div>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#ask">The problem</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#framework">The framework</a></li>
+        <li><a href="#value">What changes</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#traction">Traction</a></li>
+        <li><a href="#who">Who it's for</a></li>
+        <li><a href="#reading">What we read</a></li>
+        <li><a href="#status">Where we are</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="#demo">Request a demo</a>
+  </div>
+</header>
+<hr class="gradient-rule">
+
+<main>
+
+<section class="hero" id="why">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="stack">
+        <p class="kicker">Whole-person assessment and case management for human services</p>
+        <h1>Everyone has a way. Not everyone has a <em>guide</em>.</h1>
+        <p class="lede">Guideway is case management built around the person, not the program. One conversation covers fifteen areas of life, the person places themselves on each, and the next small step is already written — so a Guide spends the hour on the person, not the paperwork.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#demo">Request a demo</a>
+          <a class="btn btn-secondary" href="#how">See how it works</a>
+        </div>
+        <ul class="hero-trust" aria-label="At a glance">
+          <li>Built with Goodwill teams</li>
+          <li>Microsoft Power Platform</li>
+          <li>Pre-pilot · design partners</li>
+        </ul>
+      </div>
+
+      <div class="mock" role="img" aria-label="Concept preview of one participant's view: three areas of life with their current level, and the next written step. Illustrative only.">
+        <div class="mock-bar"><i></i><i></i><i></i><span>Concept preview</span></div>
+        <div class="mock-body">
+          <div class="mock-head"><strong>One person, fifteen areas</strong><span>Reassessed 12 days ago</span></div>
+          <div class="mock-rows">
+            <div class="mock-row" style="--lv:var(--lvl-2); --lv-text:var(--lvl-2-text)"><b>Housing</b><em>Vulnerable</em></div>
+            <div class="mock-row" style="--lv:var(--lvl-3); --lv-text:var(--lvl-3-text)"><b>Transportation</b><em>Dependent</em></div>
+            <div class="mock-row" style="--lv:var(--lvl-4); --lv-text:var(--lvl-4-text)"><b>Nutrition</b><em>Independent</em></div>
+          </div>
+          <div class="mock-next">
+            <small>Next step · Housing · within 5 days</small>
+            <b>Document housing needs</b>
+            <span>Gather ID, proof of income, residency. Start the application.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pillars">
+      <a href="#framework"><span class="num">01</span><span><b>Meet the person</b><span>One conversation, fifteen areas of life, a level the person chooses.</span></span></a>
+      <a href="#next"><span class="num">02</span><span><b>Take the next small step</b><span>The way forward is already written, with a timeframe on every step.</span></span></a>
+      <a href="#guide"><span class="num">03</span><span><b>Walk the path together</b><span>A Guide holds the map, not the wheel — and the record follows the person.</span></span></a>
+    </div>
+  </div>
+</section>
+
+<section id="ask">
+  <div class="wrap">
+    <div class="col stack">
+      <p class="kicker">The problem · Mullainathan, Ehrenreich</p>
+      <h2>Attention is the scarcest thing in a hard month</h2>
+      <p class="lede">Scarcity takes more than money. It takes bandwidth — the room to plan, remember, decide. Someone managing an eviction notice and a sick child has less of it, and every form spends what is left.</p>
+      <p class="body">Most people tell their story three or four times before anyone can help. Front desk, intake, the funder's form, the referral. Each one is a fresh start for the organization and a repeat for the person.</p>
+      <p class="body">The organization is not being careless. One running workforce, senior employment, vocational rehabilitation and food-assistance programs at once carries four reporting regimes, four definitions of progress, and no single view of the person in front of it. Four funding streams, four kinds of progress, one life.</p>
+      <p class="body">Guideway is built against both: one conversation, held once, carried forward by whoever picks it up next — and one picture of the whole person that every program can read.</p>
+      <p class="body">The stakes are not administrative. Forty years of Whitehall research found that control over your daily circumstances predicts long-term health more than income or job title does. Giving that control back is the point of everything that follows.</p>
+    </div>
+    <figure class="pull" style="margin-top:32px">
+      <blockquote>“Poverty in America is not the result of a lack of resources. It is a failure to share them.”</blockquote>
+      <figcaption>Matthew Desmond, <i>Poverty, By America</i></figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="band-white" id="how">
+  <div class="wrap">
+    <div class="col stack">
+      <p class="kicker">How it works</p>
+      <h2>Meet the person, see the whole picture, walk the path together</h2>
+      <p class="lede">Three moves. The three sections that follow are why each one is shaped the way it is.</p>
+    </div>
+    <div class="grid grid-3" style="margin-top:32px">
+      <div class="card"><span class="n">Step 01 · <a href="#framework" style="color:inherit">The framework</a></span><h3>Meet the person</h3><p>One conversation, not four intakes. The person describes their own situation, once, in their own words — across fifteen areas of life, on a five-level ladder they place themselves on.</p></div>
+      <div class="card"><span class="n">Step 02 · <a href="#next" style="color:inherit">The next step</a></span><h3>Take the next small step</h3><p>Place yourself on a level and the way forward is already written: what the next level looks like, three steps to reach it, three actions under each, every one timed.</p></div>
+      <div class="card"><span class="n">Step 03 · <a href="#guide" style="color:inherit">The Guide</a></span><h3>Walk the path together</h3><p>A Guide holds the map, not the wheel. The relationship is what makes the plan usable — and the record follows the person, so a handoff is not a restart.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="framework">
+  <div class="wrap">
+    <div class="col stack">
+      <p class="kicker">Step 01 · The framework · Huber, Perry, Hicks</p>
+      <h2>Where someone is, in their own words</h2>
+      <p class="lede">Each area asks one question with five ordered answers. The person places themselves. Nobody is scored, ranked, or told what they are.</p>
+    </div>
+
+    <figure class="pull" style="margin-top:32px">
+      <blockquote>“Health is the ability to adapt and self-manage in the face of social, physical, and emotional challenges.”</blockquote>
+      <figcaption>Machteld Huber, <i>BMJ</i>, 2011</figcaption>
+    </figure>
+
+    <div style="margin-top:48px">
+      <p class="kicker" style="margin-bottom:16px">The fifteen areas</p>
+      <ul class="areas" id="areas"></ul>
+    </div>
+
+    <div style="margin-top:48px">
+      <p class="kicker" style="margin-bottom:8px">Two samples</p>
+      <p class="body" style="margin-bottom:20px; font-size:14px">Each area has its own question and its own five-level ladder — written for that area, not adapted from a generic scale. Two shown in full; the rest in a demo.</p>
+      <div class="picker" id="picker" role="group" aria-label="Sample areas"></div>
+      <div class="panel">
+        <div class="panel-head">
+          <span class="kicker" id="p-name">Housing</span>
+          <p class="q" id="p-question"></p>
+        </div>
+        <div class="rungs" id="rungs"></div>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:48px; align-items:start">
+      <div class="sub">
+        <h3>Circumstances, not character</h3>
+        <p>Not <i>what's wrong with you</i> — <i>what happened to you</i>. A level describes a situation, never a person. Someone at Level 1 in housing is in a hard situation. They are not a Level 1. Dignity is a need, not a nicety.</p>
+      </div>
+      <div class="sub">
+        <h3>Fifteen areas, not one number</h3>
+        <p>A single score tells a Guide nothing about Monday. Mobility research finds that neighborhood, network and early exposure shape a life more than any one intervention — so a plan starts where the person says the weight sits, in the area they name.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:48px">
+      <h3 class="kicker" style="margin-bottom:8px">Stages are not levels · after Maslow</h3>
+      <p class="body" style="margin-bottom:16px; font-size:14px">Levels describe <strong>where a person is</strong> in one area of life. Stages describe the <strong>kind of support</strong> on offer. They are separate axes: people move between stages in either direction, and often do.</p>
+      <div class="grid grid-4">
+        <div class="card stage" style="--stage-color:var(--gw-blue)"><span class="ord">Stage 01</span><h3>Stabilize</h3><p>Crisis response. Immediate need, no eligibility screen, no enrollment.</p></div>
+        <div class="card stage" style="--stage-color:var(--action-blue)"><span class="ord">Stage 02</span><h3>Connect</h3><p>Program enrollment. Where eligibility lives — intake, documentation, reporting.</p></div>
+        <div class="card stage" style="--stage-color:var(--teal)"><span class="ord">Stage 03</span><h3>Build Skills</h3><p>Courses, education, coaching. Where measurable progress happens.</p></div>
+        <div class="card stage" style="--stage-color:var(--gw-green)"><span class="ord">Stage 04</span><h3>Maintain</h3><p>Sustaining supports. What a person keeps after active service ends.</p></div>
+      </div>
+      <p class="body" style="margin-top:16px; font-size:14px">The stages follow the order Maslow gave human needs. Guideway borrows the order, not the prerequisite — all fifteen areas are assessed together, so someone can be building skills in one while stabilizing in another.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band-white" id="next">
+  <div class="wrap">
+    <div class="col stack">
+      <p class="kicker">Step 02 · The next step · Heath, Schwartz, Kahneman, Hellman</p>
+      <h2>Shrink the change to the next step</h2>
+      <p class="lede">Place yourself on a level and the way forward is already written — what the next level looks like, three steps to reach it, three actions under each. Every one with a timeframe.</p>
+    </div>
+
+    <div class="grid grid-3" style="margin-top:32px">
+      <div class="card"><span class="n">Within 48 hours</span><h3>Connect to emergency shelter</h3><p>Identify two or three local programs. Schedule an intake appointment. Arrange the way to get there.</p></div>
+      <div class="card"><span class="n">Within 5 days</span><h3>Document housing needs</h3><p>Complete a housing assessment. Gather ID, proof of income, residency. Start the application.</p></div>
+      <div class="card"><span class="n">Within 2 weeks</span><h3>Build a housing plan</h3><p>Set short and long-term goals. Identify income or benefits that support them. Revisit weekly.</p></div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:48px; align-items:start">
+      <div class="sub"><h3>Why three, not thirty</h3><p>More options don't help someone who is overwhelmed. They stall them. A curated few beats a comprehensive list — especially for the people the list was meant to serve.</p></div>
+      <div class="sub"><h3>Why the step is small</h3><p>Under pressure, people decide fast rather than deliberately, so sequence and defaults matter more than choice. And hope is not a mood — it is knowing a path exists and that you can walk it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="guide">
+  <div class="wrap">
+    <div class="col stack">
+      <p class="kicker">Step 03 · The Guide · Payne, Allen, Powell</p>
+      <h2>A guide, not a gate</h2>
+      <p class="lede">People find help through people — not directories, rarely search. Through someone they already trust who can name the right thing in one sentence.</p>
+      <p class="body">So the map lives in the software instead of in one staff member's head, and survives a day off, a resignation, a handoff. What the Guide brings is what software cannot: the relationship that makes any of it usable.</p>
+    </div>
+
+    <div style="margin-top:40px">
+      <p class="kicker" style="margin-bottom:8px">The shape of the work</p>
+      <p class="body" style="margin-bottom:20px; font-size:14px">The whole arc, in four sentences. This is a theme, not a scale — nobody is placed on it, nothing is measured against it, and it is not the five levels.</p>
+      <div class="arc">
+        <div><h3>Someone guides you</h3><p>Help arrives through a person, not a portal. In a hard month, the Guide carries what you cannot carry yet.</p></div>
+        <div><h3>You guide yourself</h3><p>The plan is yours. You pick the area, place yourself on it, and take the step. The Guide holds the map, never the wheel.</p></div>
+        <div><h3>You build with others</h3><p>Nobody is self-sufficient and the goal was never to make them so. Social ties predict health and mobility more than income does.</p></div>
+        <div><h3>You guide someone else</h3><p>The neighbor, the newcomer, the person three months behind you. Goodwill has run on this step for a century — people who were served becoming people who serve.</p></div>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:32px; align-items:start">
+      <div class="sub"><h3>Trust is built in small moments</h3><p>Repeated, respectful, low-stakes encounters are how institutions earn trust — or spend it. An assessment is one of those, not a data-collection event. Hard questions come late, once the early ones have proved safe to answer.</p></div>
+      <div class="sub"><h3>Belonging is structural</h3><p>Belonging is not a program. It is a condition you design for or against. Social ties predict health, safety and mobility more than income does — which is why social connection sits alongside food and shelter, not after them.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band-white" id="value">
+  <div class="wrap">
+    <div class="col stack">
+      <p class="kicker">What changes</p>
+      <h2>What changes on Monday</h2>
+      <p class="lede">Put the three moves together and the work takes a different shape. Not a longer form and a new login.</p>
+    </div>
+    <ul class="notlist" style="margin-top:32px">
+      <li><strong>One conversation replaces four intakes</strong><span>Told once, held once, carried forward — to the covering Guide, the next program, whoever picks up the work. Nobody explains themselves twice to get help they already qualified for.</span></li>
+      <li><strong>A plan exists the moment the conversation ends</strong><span>A level opens what the next level looks like, three steps to reach it, three actions under each — every one timed. Roughly 630 steps are already written. Nobody drafts a plan from a blank page at 6pm.</span></li>
+      <li><strong>Enrollment and case management in one place</strong><span>Participant records, enrollment, notes, goals and follow-up. Billing stays with the systems you already run.</span></li>
+      <li><strong>Progress you can show before your funder can measure it</strong><span>WIOA outcomes arrive after exit, quarterly-lagged, from wage records. Guideway shows movement while the person is still in front of you — level change, goals met, steps completed, referrals that converted. All participant-reported unless otherwise noted.</span></li>
+      <li><strong>It runs on the resources you already have</strong><span>Your local list, your programs, your partner hubs — organized by area and stage, so the map survives one experienced Guide's day off.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="col stack">
+      <p class="kicker">Features</p>
+      <h2>What Guideway adds to case management</h2>
+      <p class="lede">Traditional case management records the work. Guideway keeps that, then adds the parts that make progress visible. Every Guideway row is marked for where it stands today — we would rather you know before a demo than after.</p>
+    </div>
+
+    <ul class="feat-key" style="margin-top:32px" aria-label="Status key">
+      <li><span class="st built">Built</span> Live in the application today</li>
+      <li><span class="st designed">Designed</span> Content written and reviewed; not yet a screen</li>
+      <li><span class="st out">Not in scope</span> Deliberately left to the systems you already run</li>
+    </ul>
+
+    <div class="scroll-x">
+      <table class="cmp">
+        <caption class="visually-hidden">Capability comparison: traditional case management against Guideway, with Guideway build status</caption>
+        <colgroup><col class="c-cap"><col class="c-trad"><col class="c-gw"></colgroup>
+        <thead>
+          <tr>
+            <th scope="col">Capability</th>
+            <th scope="col">Traditional case management</th>
+            <th scope="col" class="gw"><span class="brand">Guideway</span>Status today</th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr class="grp"><th scope="row" colspan="3">Manage the work</th></tr>
+      <tr><th scope="row">Participant records and enrollment<small>One record per person; billing stays where it is</small></th><td><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> Standard</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st built">Built</span></span></td></tr>
+      <tr><th scope="row">Notes and the Guide's caseload<small>Everyone a Guide is working with, and when they were last in touch</small></th><td><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> Standard</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st built">Built</span></span></td></tr>
+      <tr><th scope="row">Activity reporting<small>Enrollments, contacts, services, referrals</small></th><td><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> Standard</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st built">Built</span></span></td></tr>
+      <tr><th scope="row">Roles and single sign-on<small>Case Manager, Administrator, Enterprise Administrator; Microsoft Entra ID</small></th><td><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> Standard</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st built">Built</span></span></td></tr>
+      <tr class="grp"><th scope="row" colspan="3">Understand the person</th></tr>
+      <tr><th scope="row">One assessment across fifteen areas of life<small>One question per area, five ordered answers, plain language</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">No.</span> One intake per program, repeated</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
+      <tr><th scope="row">Five-level placement chosen by the person<small>Critical to Thriving, one area at a time. Nobody is given a number</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">No.</span> Staff-scored, or not assessed</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
+      <tr><th scope="row">Reassessment that never overwrites the last answer<small>A new assessment each time; the history survives a reworded question</small></th><td><span class="cell"><span class="g part" aria-hidden="true">&#9681;</span><span class="visually-hidden">Partly.</span> Edits the existing record</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
+      <tr class="grp"><th scope="row" colspan="3">Plan the way forward</th></tr>
+      <tr><th scope="row">Written next steps at every level<small>What the next level looks like, three steps, three actions each, every one timed. Roughly 630 written</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">No.</span> Plan starts from a blank page</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
+      <tr><th scope="row">Goal and action plan drawn from the written journey<small>Built with the participant, not for them</small></th><td><span class="cell"><span class="g part" aria-hidden="true">&#9681;</span><span class="visually-hidden">Partly.</span> Free-text goals</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
+      <tr><th scope="row">Resources organized by area and stage<small>Your local list, your programs, your partner hubs. Context, not an integration</small></th><td><span class="cell"><span class="g part" aria-hidden="true">&#9681;</span><span class="visually-hidden">Partly.</span> A directory</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
+      <tr class="grp"><th scope="row" colspan="3">Show the progress</th></tr>
+      <tr><th scope="row">Level movement visible during service<small>Not after exit, not on a quarterly wage-record lag</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">No.</span> Activity counts</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
+      <tr><th scope="row">Stalls and declines shown as plainly as gains<small>A downward move re-derives the plan; it is never a failing grade</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">No.</span> Rarely surfaced</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
+      <tr class="grp"><th scope="row" colspan="3">Left to the systems you already run</th></tr>
+      <tr><th scope="row">Billing, claims and invoicing<small>Guideway does not bill and will not pretend to</small></th><td><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> Standard</span></td><td class="gw"><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">No.</span> <span class="st out">Not in scope</span></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="body" style="margin-top:16px; font-size:13px; color:var(--slate-text)">“Traditional case management” describes the common shape of activity-based systems, not any named product. Guideway status as of September 2026; for what has and has not been proven, see <a href="#status">where we are today</a>.</p>
+  </div>
+</section>
+
+<section class="band-white" id="traction">
+  <div class="wrap">
+    <div class="col stack">
+      <p class="kicker">Traction</p>
+      <h2>Case management tracks the work. Guideway makes the progress visible.</h2>
+      <p class="lede">Most systems store activity well — notes, services, referrals, documents. Guideway is built to answer a different question first: did anything actually move?</p>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:32px; align-items:start">
+      <div class="sub">
+        <h3>What did we do?</h3>
+        <p>Referrals sent, services delivered, encounters logged, appointments kept, notes written. Every system records this, and it matters — but on its own it is a record of effort. “Six services and three referrals” does not say whether a life moved.</p>
+      </div>
+      <div class="sub">
+        <h3>What changed?</h3>
+        <p>A level moved. A barrier came down. A goal was met, or missed. Someone stalled. Guideway shows this <em>beside</em> the activity, never instead of it — progress without knowing what contributed to it is as thin as activity without progress.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:48px">
+      <p class="kicker" style="margin-bottom:8px">The participant scorecard</p>
+      <p class="body" style="margin-bottom:16px; font-size:14px">Fifteen areas, where someone was, where they are now, and what moved. Legible in seconds instead of six months of notes.</p>
+      <p class="sample"><strong>Illustrative sample.</strong> Invented figures for one imagined person. Guideway holds no participant data and has produced no results — see <a href="#status">where we are today</a>.</p>
+      <div class="scroll-x">
+        <table class="score">
+          <caption class="visually-hidden">Sample participant scorecard: level 90 days ago, level today, and movement</caption>
+          <thead>
+            <tr><th scope="col">Life area</th><th scope="col">90 days ago</th><th scope="col">Today</th><th scope="col">Movement</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Housing</th><td>Vulnerable</td><td>Independent</td><td class="mv"><span class="ar" aria-hidden="true">&#8593;</span>Up 2 levels</td></tr>
+            <tr><th scope="row">Transportation</th><td>Critical</td><td>Dependent</td><td class="mv"><span class="ar" aria-hidden="true">&#8593;</span>Up 2 levels</td></tr>
+            <tr><th scope="row">Workforce Development</th><td>Dependent</td><td>Independent</td><td class="mv"><span class="ar" aria-hidden="true">&#8593;</span>Up 1 level</td></tr>
+            <tr><th scope="row">Nutrition</th><td>Independent</td><td>Thriving</td><td class="mv"><span class="ar" aria-hidden="true">&#8593;</span>Up 1 level</td></tr>
+            <tr><th scope="row">Financial Stability</th><td>Vulnerable</td><td>Vulnerable</td><td class="mv"><span class="ar" aria-hidden="true">&#8594;</span>No change</td></tr>
+            <tr><th scope="row">Mental Health</th><td>Independent</td><td>Dependent</td><td class="mv"><span class="ar" aria-hidden="true">&#8595;</span>Down 1 level</td></tr>
+            <tr><th scope="row">Family Care</th><td>Critical</td><td>Critical</td><td class="mv"><span class="ar" aria-hidden="true">&#9888;</span>Stalled — 2 goals overdue</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="body" style="margin-top:16px; font-size:14px">The down row and the stalled row are not an accident of the example. A dashboard that can only go up is not a measurement system, so every downward metric is shown as plainly as every upward one.</p>
+    </div>
+
+    <div style="margin-top:48px">
+      <p class="kicker" style="margin-bottom:8px">Traction, not a life score</p>
+      <p class="body" style="margin-bottom:16px; font-size:14px">Housing and mental health should not be averaged into one number, and nobody should be told their life scores 42. Traction describes <strong>movement</strong>, never the person — and moving down is a supported path, not a failure state.</p>
+      <ul class="states">
+        <li><span class="ar" aria-hidden="true">&#8593;</span><span><strong>Strong progress</strong> — movement up in several areas</span></li>
+        <li><span class="ar" aria-hidden="true">&#8593;</span><span><strong>Progressing</strong> — movement up in at least one</span></li>
+        <li><span class="ar" aria-hidden="true">&#8594;</span><span><strong>Holding steady</strong> — no change, which is sometimes the win</span></li>
+        <li><span class="ar" aria-hidden="true">&#9888;</span><span><strong>Stalled</strong> — goals overdue, or no movement where movement was expected</span></li>
+        <li><span class="ar" aria-hidden="true">&#8595;</span><span><strong>Needs support</strong> — movement down, which re-derives the plan rather than penalizing anyone</span></li>
+      </ul>
+      <p class="body" style="margin-top:16px; font-size:14px">These carry no color. Red for a person moving down would make a hard month look like a failing grade, and the same rule that keeps the level ladder blue-to-green keeps this neutral. The arrow and the words do the work.</p>
+    </div>
+
+    <div style="margin-top:48px">
+      <p class="kicker" style="margin-bottom:8px">The same record, five ways</p>
+      <ul class="views">
+        <li><span class="who">The participant</span><span class="sees">Their own fifteen areas, then and now. “I was Critical in three areas six months ago. I am Independent in two of them.” Progress you can see is progress you can own.</span></li>
+        <li><span class="who">The Guide</span><span class="sees">What is improving, what is stuck, what is declining, which goals are overdue, which referrals never closed, and who needs attention today — in seconds, not in months of notes.</span></li>
+        <li><span class="who">The supervisor</span><span class="sees">The team at a glance: progressing, stalled, needing support. Always shown with the mix of people each Guide is carrying — a Guide supporting six Critical areas is not underperforming one supporting Level 4s.</span></li>
+        <li><span class="who">Program leadership</span><span class="sees">Movement by area, by program, by location. Time from Critical to Independent. Which goals are missed most, and where referrals stop converting.</span></li>
+        <li><span class="who">The board and funders</span><span class="sees">Not only how many people were served, but whether the areas of their lives moved — and which barrier the community could not clear.</span></li>
+      </ul>
+    </div>
+
+    <div style="margin-top:48px">
+      <p class="kicker" style="margin-bottom:8px">And across a community</p>
+      <p class="body" style="margin-bottom:16px; font-size:14px">The same fifteen areas aggregate. Filter by location, program, age, workforce status or time period, and an organization stops seeing one record at a time and starts seeing the community it serves.</p>
+      <p class="sample"><strong>Illustrative sample.</strong> Invented distribution, shown to demonstrate the shape of the view. Not a finding, and not Guideway data.</p>
+      <div class="scroll-x">
+        <div class="dist" role="img" aria-label="Sample housing distribution: 14 percent Critical, 23 percent Vulnerable, 28 percent Dependent, 29 percent Independent, 6 percent Thriving">
+          <div style="width:14%; background:var(--lvl-1)"></div>
+          <div style="width:23%; background:var(--lvl-2)"></div>
+          <div style="width:28%; background:var(--lvl-3)"></div>
+          <div style="width:29%; background:var(--lvl-4)"></div>
+          <div style="width:6%; background:var(--lvl-5)"></div>
+        </div>
+      </div>
+      <ul class="distkey">
+        <li><i style="background:var(--lvl-1)"></i>Critical 14%</li>
+        <li><i style="background:var(--lvl-2)"></i>Vulnerable 23%</li>
+        <li><i style="background:var(--lvl-3)"></i>Dependent 28%</li>
+        <li><i style="background:var(--lvl-4)"></i>Independent 29%</li>
+        <li><i style="background:var(--lvl-5)"></i>Thriving 6%</li>
+      </ul>
+      <p class="body" style="margin-top:20px; font-size:14px">That is what makes a sentence like <em>“transportation is the largest unresolved barrier at these three locations”</em> answerable — and it is the kind of question Guideway is built to ask. Whether moving up in Family Care predicts staying employed is a further question again; answering it needs a pilot and a comparison group, neither of which exists yet.</p>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:48px; align-items:start">
+      <div class="sub">
+        <h3>The most useful number is the one that looks bad</h3>
+        <p>Top goals missed, ranked by area and level, tells an organization which goals are badly designed or unsupported by local resources — not which participants failed. It gets real weight in the interface, not a footnote. Referrals carry a required reason code when someone could not access a service, because without it the data reads as people failing, which is usually wrong and always damaging.</p>
+      </div>
+      <div class="sub">
+        <h3>What Guideway can and cannot say</h3>
+        <p>Levels are placed by the person and anchored to their own judgment. Guideway may report that <strong>participants reported improvement</strong>. It may not report that Guideway improved outcomes — that needs a comparison group Guideway does not have. And some apparent decline is not decline: people describe their circumstances more honestly as trust builds, so better honesty can look like deterioration in the data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="who">
+  <div class="wrap">
+    <div class="col stack">
+      <p class="kicker">Who it's for</p>
+      <h2>Three people, one shared view</h2>
+      <p class="lede">The same record answers three different questions, so nobody rebuilds it in a spreadsheet.</p>
+    </div>
+    <div class="grid grid-3" style="margin-top:32px">
+      <div class="card">
+        <svg class="ico" viewBox="0 0 24 24" role="img" aria-label="Guides and frontline staff"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+        <h3>Guides and frontline staff</h3>
+        <p>More time with people, less with forms. One record, one conversation, and a next step that is already written before the meeting ends.</p>
+      </div>
+      <div class="card">
+        <svg class="ico" viewBox="0 0 24 24" role="img" aria-label="Nonprofit leaders"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        <h3>Nonprofit leaders</h3>
+        <p>Your community's needs at a glance — across programs, sites and funding streams, in one shared language rather than four incompatible ones.</p>
+      </div>
+      <div class="card">
+        <svg class="ico" viewBox="0 0 24 24" role="img" aria-label="Funders and boards"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+        <h3>Funders and boards</h3>
+        <p>Progress across a person's whole life, in program and in real time — while federal outcomes are still waiting on a quarterly wage-record lag.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band-white" id="reading">
+  <div class="wrap">
+    <div class="col stack">
+      <p class="kicker">What we read</p>
+      <h2>And who we built it with</h2>
+      <p class="lede">Guideway was built with Goodwill teams, whose practice since 1902 — a hand up, not a handout — has shaped every screen. Where the books offered principles, Goodwill offered proof: what it looks like to serve real people, day after day, without losing sight of the person on the other side.</p>
+      <p class="body">Guideway has no outcome data yet. What it has is a set of design decisions traceable to people who studied this for decades — and to teams who have practiced it for a century.</p>
+    </div>
+    <ul class="reading" style="margin-top:32px">
+      <li><span class="src">Michael Marmot — <em>Whitehall Studies</em></span><span class="use">Control predicts long-term health more than income. Why the framework is a ladder, not a score.</span></li>
+      <li><span class="src">Machteld Huber — <em>BMJ</em>, 2011</span><span class="use">Health as the ability to adapt and self-manage. Why we measure circumstances, not conditions.</span></li>
+      <li><span class="src">Abraham Maslow — <em>A Theory of Human Motivation</em>, 1943</span><span class="use">Needs have an order, but not a queue. Why the four stages run physiological to self-direction — and why no area is gated behind another.</span></li>
+      <li><span class="src">Erik Erikson — <em>Childhood and Society</em></span><span class="use">Generativity: past a point, wellbeing depends on being depended on. Why the arc does not end at independence.</span></li>
+      <li><span class="src">Sendhil Mullainathan &amp; Eldar Shafir — <em>Scarcity</em></span><span class="use">Scarcity taxes bandwidth. Why one conversation, and never the same question twice.</span></li>
+      <li><span class="src">Bruce Perry &amp; Oprah Winfrey — <em>What Happened to You?</em></span><span class="use">Change the question. Why levels describe circumstances and never character.</span></li>
+      <li><span class="src">Donna Hicks — <em>Dignity</em></span><span class="use">Dignity is a need, not a nicety. Why the language is warm, the questions hard but never demeaning, and no one is a case.</span></li>
+      <li><span class="src">Chan Hellman — <em>Hope Rising</em></span><span class="use">Hope is measurable and teachable, not a mood. Why we show a path forward, not a snapshot of what's wrong.</span></li>
+      <li><span class="src">Viktor Frankl — <em>Man's Search for Meaning</em></span><span class="use">People survive circumstances by finding purpose inside them. Why the framework treats people as agents of their own path.</span></li>
+      <li><span class="src">Barbara Ehrenreich — <em>Nickel and Dimed</em></span><span class="use">Working full time and still not making ends meet, from the inside. Why we never assume a hard question can be answered with a checkbox.</span></li>
+      <li><span class="src">Barry Schwartz — <em>The Paradox of Choice</em></span><span class="use">Curated choice beats infinite choice. Why a journey is three steps, not thirty options.</span></li>
+      <li><span class="src">Daniel Kahneman — <em>Thinking, Fast and Slow</em></span><span class="use">Under pressure people decide fast, not deliberately. Why sequence, defaults and plain language beat options.</span></li>
+      <li><span class="src">Chip &amp; Dan Heath — <em>Switch</em></span><span class="use">Shrink the change; script the critical moves. Why every step carries a timeframe and a first action.</span></li>
+      <li><span class="src">Ruby Payne — <em>A Framework for Understanding Poverty</em></span><span class="use">Help travels through trusted people. Why the guide is the product and the software is the map.</span></li>
+      <li><span class="src">Matthew Desmond — <em>Evicted</em>; <em>Poverty, By America</em></span><span class="use">Poverty is fragile, and people know when they are being judged. Why nothing here is a score.</span></li>
+      <li><span class="src">Danielle Allen — <em>Talking to Strangers</em></span><span class="use">Trust is built in repeated respectful encounters. Why hard questions come late.</span></li>
+      <li><span class="src">john a. powell — <em>Belonging without Othering</em></span><span class="use">Belonging is a structural condition, not a program. Why social connection sits alongside food and shelter.</span></li>
+      <li><span class="src">Robert Putnam — <em>Bowling Alone</em>; Robert Sampson — <em>Great American City</em></span><span class="use">Social ties predict outcomes. Why connection is one of the fifteen areas.</span></li>
+      <li><span class="src">Raj Chetty — <em>Opportunity Insights</em></span><span class="use">Neighborhood, network and early exposure predict mobility more than any single intervention. Why fifteen areas, not one number.</span></li>
+      <li><span class="src">Don Norman — <em>The Design of Everyday Things</em></span><span class="use">Design is empathy made structural. Why a bad screen is never blamed on the person using it.</span></li>
+      <li><span class="src">Richard Thaler &amp; Cass Sunstein — <em>Nudge</em></span><span class="use">Defaults do more work than persuasion. Why Guideway ships configured, not empty.</span></li>
+      <li><span class="src">Everett Rogers — <em>Diffusion of Innovations</em></span><span class="use">Simple message, low barrier, early wins compound. Why rollout starts with one site done properly.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="status">
+  <div class="wrap">
+    <div class="col stack">
+      <p class="kicker">Honest status</p>
+      <h2>Where Guideway is today</h2>
+      <p class="lede">Guideway is early. If you are evaluating it, you should know how early.</p>
+    </div>
+    <dl class="status" style="margin-top:32px">
+      <div><dt>Stage</dt><dd>Pre-pilot. The framework is written; the product is being prepared for a first site.</dd></div>
+      <div><dt>Evidence</dt><dd>None yet. No pilot results, no outcome data, no comparison group.</dd></div>
+      <div><dt>Accessibility</dt><dd>Designed against WCAG 2.1 AA. No formal audit performed; no conformance claimed.</dd></div>
+      <div><dt>Security</dt><dd>Microsoft Power Platform with Entra ID sign-in. No third-party certification held.</dd></div>
+      <div><dt>Content review</dt><dd>Health, mental health, substance use and safety material is under review by qualified professionals.</dd></div>
+      <div><dt>Availability</dt><dd>Working with a small number of design partners. Not generally available.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="band-white" id="demo">
+  <div class="wrap">
+    <div class="grid grid-2" style="align-items:start">
+      <div class="stack">
+        <p class="kicker">Talk to us</p>
+        <h2>Find the way with us</h2>
+        <p class="lede">Thirty minutes, no deck. We'll walk the framework with your programs in mind and tell you plainly whether it's a fit yet.</p>
+        <p class="body">Worth mentioning: which programs you run, what you use today, and what asking once instead of four times would change for your team.</p>
+      </div>
+      <div class="formwrap">
+        <p class="formnote"><strong>Mock form.</strong> This is a draft page — the form is not connected and submits nothing.</p>
+        <form onsubmit="return false;">
+          <div class="field"><label for="f-name">Your name</label><input id="f-name" type="text" autocomplete="name"></div>
+          <div class="field"><label for="f-org">Organization</label><input id="f-org" type="text" autocomplete="organization"></div>
+          <div class="field"><label for="f-email">Work email</label><input id="f-email" type="email" autocomplete="email"><span class="hint">Only used to reply about your request.</span></div>
+          <div class="field"><label for="f-msg">What would you like to talk about?</label><textarea id="f-msg"></textarea></div>
+          <button class="btn" type="submit">Request a demo</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<hr class="gradient-rule">
+<footer>
+  <div class="wrap">
+    <div>Guideway — draft site for internal review. Not published.</div>
+    <div>Research cited as the basis for design, not as evidence of results.</div>
+  </div>
+</footer>
+
+<script>
+const LEVELS = ["Critical","Vulnerable","Dependent","Independent","Thriving"];
+
+/* All fifteen areas are named. Only the two samples carry their question and ladder —
+   the rest of the framework content is not published. */
+const AREAS = [
+ "Communication","Digital Access and Equity","Education Stability","Environmental Health",
+ "Family Care","Financial Stability","Health Behavior Promotion","Health Care","Housing",
+ "Mental Health","Nutrition","Safety, Violence Prevention & Environmental Safety",
+ "Social Connection & Support Groups","Transportation","Workforce Development"
+];
+const PENDING = ["Digital Access and Equity"];
+const SAMPLES = ["Housing","Nutrition"];
+
+const D = [
+ ["Housing","How would you best describe your current housing situation?",["Homeless or in temporary housing","Unstable or at-risk housing","Stable with housing support","Housing stability without assistance","Housing security with financial stability"]],
+ ["Nutrition","How would you best describe your access to food for yourself and/or your family in the past three months?",["No sustainable access to food","Relies on public assistance for food","Gets and prepares food using a mix of income and assistance","Enough food from own income","Buys the food they need and want"]]
+];
+
+const areasEl=document.getElementById('areas');
+AREAS.forEach(name=>{
+  const li=document.createElement('li');
+  li.textContent=name;
+  if(SAMPLES.includes(name)) li.className='sample';
+  else if(PENDING.includes(name)){ li.className='pending'; li.textContent=name+' — in development'; }
+  areasEl.appendChild(li);
+});
+
+const picker=document.getElementById('picker'), rungs=document.getElementById('rungs');
+const nameEl=document.getElementById('p-name'), qEl=document.getElementById('p-question');
+
+function render(i){
+  const [name,q,descs]=D[i];
+  nameEl.textContent=name;
+  qEl.textContent=q;
+  rungs.innerHTML='';
+  descs.forEach((desc,k)=>{
+    const row=document.createElement('div');
+    row.className='rung';
+    /* --lv is the decorative rail (full-saturation ramp);
+       --lv-text is the AA-safe variant that carries the label. */
+    row.style.setProperty('--lv',`var(--lvl-${k+1})`);
+    row.style.setProperty('--lv-text',`var(--lvl-${k+1}-text)`);
+    row.innerHTML=`<span class="num">Level ${k+1}</span><span><span class="lab">${LEVELS[k]}</span><span class="desc">${desc}</span></span>`;
+    rungs.appendChild(row);
+  });
+  [...picker.children].forEach((b,j)=>b.setAttribute('aria-pressed', j===i?'true':'false'));
+}
+
+D.forEach(([name],i)=>{
+  const b=document.createElement('button');
+  b.type='button'; b.textContent=name; b.setAttribute('aria-pressed','false');
+  b.addEventListener('click',()=>render(i));
+  picker.appendChild(b);
+});
+render(0);
+</script>
+</body>
+</html>
