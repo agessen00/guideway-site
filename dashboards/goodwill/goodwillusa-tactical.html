@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Goodwill USA 2.1 · TA Tactical Dashboard · MOCKUP</title>
+<style>
+  :root{
+    --navy:#12284C; --navy-soft:#E4E9F2;
+    --blue:#2E6FD6; --blue-soft:#DCE7F7;
+    --teal:#1F9E8F; --teal-soft:#D6EFEB;
+    --green:#2E9E5B; --green-soft:#DCF0E4;
+    --amber:#E8A33D; --amber-soft:#FBEBD0;
+    --red:#D64550; --red-soft:#F7DDDF;
+    --lblue:#5B9BD5; --lblue-soft:#E0EDF7;
+    --slate:#6B7A8D; --slate-soft:#EDF0F3;
+    --amber-text:#8A5D06; --green-text:#186A3B; --red-text:#8B1E28; --slate-text:#4A5566;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Calibri','Segoe UI',sans-serif;background:#F0F2F5;color:#222;font-size:13px;line-height:1.4}
+  .frame{max-width:1520px;margin:0 auto;background:white;min-height:100vh}
+
+  .head{background:var(--navy);color:white;padding:18px 28px;border-bottom:4px solid var(--amber)}
+  .head .row{display:flex;justify-content:space-between;align-items:baseline}
+  .head h1{font-size:22px;font-weight:700;letter-spacing:-0.2px}
+  .head .env{font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:1px}
+  .head .sub{margin-top:4px;font-size:12px;color:rgba(255,255,255,0.85);font-style:italic}
+
+  .filters{padding:14px 28px;background:#FAFBFC;border-bottom:1px solid #E5E5E5;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .filter{background:white;border:1px solid #D5DAE0;border-radius:20px;padding:5px 12px;font-size:11px;color:var(--navy);cursor:pointer}
+  .filter b{color:var(--slate);font-weight:600;margin-right:5px;font-size:10px;letter-spacing:0.5px}
+  .filter::after{content:" ▾";color:var(--slate);font-size:9px;margin-left:4px}
+  .filters .note{margin-left:auto;font-size:11px;color:var(--slate);font-style:italic}
+
+  .body{padding:22px 28px}
+  .section{margin-bottom:22px}
+  .section-head{background:var(--navy);color:white;padding:9px 14px;font-size:11px;font-weight:700;letter-spacing:1.5px;border-radius:4px 4px 0 0;display:flex;justify-content:space-between;align-items:center}
+  .section-head .badge{background:var(--amber);color:var(--navy);padding:2px 8px;border-radius:3px;font-size:10px}
+
+  .kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px}
+  .kpi{background:white;border:1px solid #E0E4E8;border-radius:4px;padding:12px;border-top:3px solid var(--blue)}
+  .kpi .lbl{font-size:9px;letter-spacing:1.2px;color:var(--slate);font-weight:700;text-transform:uppercase}
+  .kpi .val{font-size:28px;color:var(--navy);font-weight:700;margin-top:5px;line-height:1}
+  .kpi .split{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;padding-top:6px;border-top:1px solid #EEF0F3}
+  .kpi .split div{text-align:center;padding:2px 3px;border-radius:2px}
+  .kpi .split .mgmt{background:var(--amber-soft);color:var(--amber-text);font-weight:700}
+  .kpi .split .hrly{background:var(--green-soft);color:var(--green-text);font-weight:700}
+  .kpi .split small{display:block;font-size:8px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--slate);margin-bottom:1px}
+  .kpi .split b{font-size:12px}
+
+  .risk-band{background:var(--red-soft);border:1px solid var(--red);border-left:5px solid var(--red);border-radius:4px;padding:12px 16px;margin-bottom:22px;display:grid;grid-template-columns:100px 1fr;gap:16px;align-items:center}
+  .risk-band .big{font-size:32px;color:var(--red);font-weight:800;text-align:center;line-height:1}
+  .risk-band .big small{display:block;font-size:9px;letter-spacing:1.5px;color:var(--red);font-weight:700;margin-top:4px}
+  .risk-band .title{color:var(--red);font-weight:700;font-size:13px;margin-bottom:4px}
+  .risk-band .title::before{content:"⚠  "}
+  .risk-band .subline{font-size:11px;color:var(--slate)}
+  .risk-band .items{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .risk-band .chip{background:white;border:1px solid #E5C0C2;padding:4px 10px;border-radius:3px;font-size:11px;color:var(--navy)}
+  .risk-band .chip b{color:var(--red);font-weight:700;margin-left:5px}
+  .risk-band .chip small{color:var(--slate);margin-left:4px}
+
+  .block{background:white;border:1px solid #E0E4E8;border-radius:0 0 4px 4px;padding:14px 16px}
+  .grid-2{display:grid;grid-template-columns:1.1fr 0.9fr;gap:16px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  table th{background:var(--navy);color:white;padding:7px 9px;text-align:left;font-size:10px;letter-spacing:0.8px;font-weight:700;text-transform:uppercase}
+  table td{padding:7px 9px;border-bottom:1px solid #EEF0F3;color:var(--navy)}
+  table tr:last-child td{border-bottom:0}
+  table tr:hover{background:#F7F9FB}
+  .m-badge{display:inline-block;background:var(--lblue);color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:5px}
+  .status-vacant{color:var(--red);background:var(--red-soft);padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700}
+  .status-pend{color:var(--amber);background:var(--amber-soft);padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700}
+  .status-ready{color:var(--green);background:var(--green-soft);padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700}
+  .status-cxl{color:var(--slate);background:var(--slate-soft);padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700}
+  .day-red{color:var(--red-text);font-weight:700}
+  .day-amber{color:var(--amber-text);font-weight:700}
+  .day-green{color:var(--green-text);font-weight:700}
+
+  .funnel{display:flex;gap:4px;align-items:stretch}
+  .stage{flex:1;background:white;border:1px solid #E0E4E8;padding:11px;text-align:center;position:relative;border-top:3px solid var(--blue)}
+  .stage:nth-child(1){border-top-color:var(--red)}
+  .stage:nth-child(2){border-top-color:var(--amber)}
+  .stage:nth-child(3){border-top-color:var(--teal)}
+  .stage:nth-child(4){border-top-color:var(--blue)}
+  .stage:nth-child(5){border-top-color:var(--red)}
+  .stage:nth-child(6){border-top-color:var(--green)}
+  .stage:nth-child(7){border-top-color:var(--slate)}
+  .stage .n{font-size:24px;color:var(--navy);font-weight:700;line-height:1}
+  .stage .l{font-size:10px;color:var(--slate);margin-top:5px;letter-spacing:0.4px;text-transform:uppercase;font-weight:600}
+
+  .ip-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .ip-tile{background:white;border:1px solid #E0E4E8;border-left:4px solid var(--amber);padding:14px 16px;border-radius:0 4px 4px 0}
+  .ip-tile.selected{border-left-color:var(--green)}
+  .ip-tile.noshow{border-left-color:var(--red)}
+  .ip-tile .hd{font-size:10px;letter-spacing:1.2px;color:var(--slate);font-weight:700;text-transform:uppercase}
+  .ip-tile .pct{font-size:32px;font-weight:800;color:var(--navy);line-height:1;margin-top:6px}
+  .ip-tile.selected .pct{color:var(--green)}
+  .ip-tile.noshow .pct{color:var(--red)}
+  .ip-tile .of{font-size:11px;color:var(--slate);margin-top:4px}
+  .ip-tile .split{margin-top:10px;font-size:11px;color:var(--slate);padding-top:8px;border-top:1px dashed #EEE}
+  .ip-tile .split b{color:var(--navy)}
+
+  .reason-list{display:grid;grid-template-columns:1fr;gap:8px}
+  .reason{display:grid;grid-template-columns:1fr 60px;align-items:center;gap:10px;padding:8px 12px;background:#F7F9FB;border-left:3px solid var(--red);border-radius:0 3px 3px 0;font-size:12px}
+  .reason .r{color:var(--navy);font-weight:600}
+  .reason .p{color:var(--red);font-weight:700;text-align:right;font-size:16px}
+
+  .dept-pair{display:grid;grid-template-columns:1fr;gap:10px}
+  .dept-row{display:grid;grid-template-columns:1fr 90px 100px;align-items:center;gap:10px;padding:9px 12px;background:white;border:1px solid #E0E4E8;border-left:3px solid var(--green);border-radius:0 3px 3px 0;font-size:12px}
+  .dept-row.low{border-left-color:var(--teal)}
+  .dept-row .dn{color:var(--navy);font-weight:700}
+  .dept-row .dm{font-size:10px;color:var(--slate)}
+  .dept-row .dp{color:var(--green);font-weight:800;text-align:right;font-size:16px}
+  .dept-row.low .dp{color:var(--teal)}
+
+  .aging-row td.days-warn{color:var(--amber);font-weight:700}
+  .aging-row td.days-hot{color:var(--red);font-weight:700}
+
+  .rec-name{font-weight:700;color:var(--navy)}
+  .rec-name small{color:var(--slate);font-weight:400;font-style:italic;margin-left:5px}
+
+  .band-header{padding:9px 14px;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;border-left:4px solid;border-bottom:1px solid #EFEFEF}
+  .band-header.crit{background:var(--red-soft);border-left-color:var(--red);color:var(--red)}
+  .band-header.watch{background:var(--amber-soft);border-left-color:var(--amber);color:var(--amber)}
+  .band-header.new{background:var(--teal-soft);border-left-color:var(--teal);color:var(--teal)}
+  .band-header .band-r{display:flex;align-items:center;gap:16px}
+  .band-header .band-r .cnt{font-weight:800;font-size:12px}
+  .band-header .sub{font-weight:400;font-size:10px;color:var(--slate);text-transform:none;letter-spacing:0.3px;font-style:italic}
+  .show-all{text-align:center;padding:12px 14px;background:#F7F9FB;font-size:12px;color:var(--blue);cursor:pointer;font-weight:600;border-top:1px dashed #DDD;display:flex;justify-content:center;align-items:center;gap:8px}
+  .show-all:hover{background:var(--blue-soft)}
+  .show-all .arrow{transition:transform 0.2s}
+  .show-all:hover .arrow{transform:translateX(3px)}
+
+  .footer{background:var(--navy);color:rgba(255,255,255,0.7);padding:12px 28px;font-size:10px;text-align:center;letter-spacing:1px}
+  .mockup-badge{position:fixed;top:12px;right:12px;background:var(--red);color:white;padding:6px 14px;font-size:10px;letter-spacing:2px;font-weight:700;border-radius:3px;z-index:999;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+
+  /* Responsive breakpoints */
+  @media (max-width:1024px){
+    .frame{max-width:100%}
+    .body{padding:16px 20px}
+    .head,.filters,.footer{padding-left:20px;padding-right:20px}
+    .filters{flex-wrap:wrap;gap:8px}
+    .kpi-strip{grid-template-columns:repeat(3,1fr)}
+    .grid-2,.grid-3{grid-template-columns:1fr}
+    .block{overflow-x:auto}
+    .funnel{flex-wrap:wrap}
+    .funnel .stage{flex:0 0 30%}
+    .ip-grid{grid-template-columns:1fr}
+    .risk-band{grid-template-columns:80px 1fr}
+    .risk-band .items{flex-direction:column}
+  }
+  @media (max-width:720px){
+    .kpi-strip{grid-template-columns:1fr 1fr}
+    .kpi .val{font-size:24px}
+    .funnel .stage{flex:0 0 47%}
+    .filters .note{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="mockup-badge">MOCKUP · TACTICAL</div>
+<div class="frame">
+
+  <div class="head">
+    <div class="row">
+      <h1>Goodwill USA 2.1 &mdash; TA Tactical Dashboard</h1>
+      <span class="env">GOODWILL USA &middot; HR &rarr; TA</span>
+    </div>
+  </div>
+
+  <div class="filters">
+    <span class="filter"><b>Location</b>All</span>
+    <span class="filter"><b>Recruiter</b>All</span>
+    <span class="filter"><b>Health</b>All</span>
+    <span class="filter"><b>Type</b>Mgmt + Hourly</span>
+    <span class="filter"><b>Date</b>Last 90 days</span>
+    <span class="note">Report run: Sep 3, 2026</span>
+  </div>
+
+  <div class="body">
+
+    <!-- TOP KPI STRIP -->
+    <div class="kpi-strip">
+      <div class="kpi"><div class="lbl">Active Requisitions</div><div class="val">26</div><div class="split"><div class="mgmt"><small>Mgmt</small><b>11</b></div><div class="hrly"><small>Hourly</small><b>15</b></div></div></div>
+      <div class="kpi"><div class="lbl">Overdue &middot; SLA</div><div class="val">9</div><div class="split"><div class="mgmt"><small>Mgmt</small><b>5</b></div><div class="hrly"><small>Hourly</small><b>4</b></div></div></div>
+      <div class="kpi"><div class="lbl">Interviews Today</div><div class="val">7</div><div class="split"><div class="mgmt"><small>Mgmt</small><b>2</b></div><div class="hrly"><small>Hourly</small><b>5</b></div></div></div>
+      <div class="kpi"><div class="lbl">Feedback Overdue</div><div class="val">4</div><div class="split"><div class="mgmt"><small>Mgmt</small><b>1</b></div><div class="hrly"><small>Hourly</small><b>3</b></div></div></div>
+      <div class="kpi"><div class="lbl">Pre-Emp Pending Transfer</div><div class="val">2</div><div class="split"><div class="mgmt"><small>Mgmt</small><b>1</b></div><div class="hrly"><small>Hourly</small><b>1</b></div></div></div>
+    </div>
+
+</div>
+
+    <!-- REQUISITION STATUS FUNNEL (with Canceled) -->
+    <div class="section">
+      <div class="section-head">REQUISITION STATUS FUNNEL <span class="badge">LIVE</span></div>
+      <div class="block">
+        <div class="funnel">
+          <div class="stage"><div class="n">13</div><div class="l">Vacant</div></div>
+          <div class="stage"><div class="n">8</div><div class="l">Pending Pre-Emp</div></div>
+          <div class="stage"><div class="n">5</div><div class="l">New Hire Ready</div></div>
+          <div class="stage"><div class="n">4</div><div class="l">Hired (&lt;3 days)</div></div>
+          <div class="stage"><div class="n">2</div><div class="l">Overdue (Missing Docs +3d)</div></div>
+          <div class="stage"><div class="n">30</div><div class="l">Completed (90d)</div></div>
+          <div class="stage"><div class="n">3</div><div class="l">Canceled</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERVIEW PIPELINE SETUP CONVERSION -->
+    <div class="section">
+      <div class="section-head">INTERVIEW PIPELINE &mdash; SETUP CONVERSION &amp; TOP REASONS <span class="badge">LAST 90 DAYS</span></div>
+      <div class="block">
+        <div class="ip-grid" style="margin-bottom:16px;">
+          <div class="ip-tile selected">
+            <div class="hd">Selected &rarr; Onboarding</div>
+            <div class="pct">39.8%</div>
+            <div class="of">190 of 477 interviews set up</div>
+            <div class="split"><b>Includes:</b> Great candidate selected + Referral to Mission Services</div>
+          </div>
+          <div class="ip-tile noshow">
+            <div class="hd">No Call / No Show</div>
+            <div class="pct">17.6%</div>
+            <div class="of">84 of 477 interviews set up</div>
+            <div class="split"><b>Signal:</b> Reminder cadence &middot; posting clarity &middot; wage transparency</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <div style="font-size:11px;letter-spacing:1.2px;color:var(--navy);font-weight:700;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:2px solid var(--red);display:inline-block;padding-right:12px;">TOP 2 &ldquo;NO&rdquo; REASONS</div>
+            <div class="reason-list">
+              <div class="reason"><span class="r">1. No Call / No Show to Interview</span><span class="p">29%</span></div>
+              <div class="reason"><span class="r">2. Schedule not compatible</span><span class="p">22%</span></div>
+              <div style="font-size:10px;color:var(--slate);margin-top:6px;font-style:italic;">Together, 51% of all "No" outcomes. Remaining 49% spread across 9 other reasons (CS Concern, Salary, Qualifications, Transportation, etc.).</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="grid-2" style="gap:16px;">
+              <div>
+                <div style="font-size:11px;letter-spacing:1.2px;color:var(--green);font-weight:700;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:2px solid var(--green);display:inline-block;padding-right:12px;">TOP 2 DEPTS &middot; HIGHEST % YES</div>
+                <div class="dept-pair">
+                  <div class="dept-row"><div><div class="dn">Corporate</div><div class="dm">11 of 16 setup</div></div><div class="dp">68%</div></div>
+                  <div class="dept-row"><div><div class="dn">Greenville</div><div class="dm">15 of 28 setup</div></div><div class="dp">54%</div></div>
+                </div>
+                <div style="font-size:10px;color:var(--slate);margin-top:6px;font-style:italic;">Yes % = Selected &rarr; Onboarding of interviews set up.</div>
+              </div>
+              <div>
+                <div style="font-size:11px;letter-spacing:1.2px;color:var(--teal);font-weight:700;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:2px solid var(--teal);display:inline-block;padding-right:12px;">TOP 2 DEPTS &middot; LOWEST % NO</div>
+                <div class="dept-pair">
+                  <div class="dept-row low"><div><div class="dn">Corporate</div><div class="dm">4 of 16 setup</div></div><div class="dp">25%</div></div>
+                  <div class="dept-row low"><div><div class="dn">Denison</div><div class="dm">6 of 20 setup</div></div><div class="dp">30%</div></div>
+                </div>
+                <div style="font-size:10px;color:var(--slate);margin-top:6px;font-style:italic;">No % = Not Selected outcomes of interviews set up.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ONBOARDING + PRE-EMP AGING -->
+<!-- WEEKLY PRIORITIES + LONGEST-OPEN -->
+    <!-- ROW A: CRITICAL PRIORITIES + TOP 10 LONGEST-OPEN VACANCIES -->
+    <div class="section">
+      <div class="grid-2">
+
+        <div>
+          <div class="section-head">CRITICAL PRIORITIES <span class="badge">SLA BREACHED &middot; ALL SHOWN</span></div>
+          <div class="block" style="padding:0;">
+            <div class="band-header crit">
+              <span>&#9679; Critical &middot; SLA breached</span>
+              <div class="band-r"><span class="sub">all breaches always shown</span><span class="cnt">9</span></div>
+            </div>
+            <table>
+              <thead><tr><th>Location</th><th>Role</th><th>Health</th><th>Days</th></tr></thead>
+              <tbody>
+                <tr><td>Sulphur Springs</td><td>Assistant Retail Manager<span class="m-badge">M</span></td><td><span class="status-vacant">Vacant</span></td><td class="day-red">56</td></tr>
+                <tr><td>Corporate</td><td>Operations Training Coach<span class="m-badge">M</span></td><td><span class="status-pend">Pend-Transfer</span></td><td class="day-red">50</td></tr>
+                <tr><td>Lamar Outlet</td><td>Retail Manager In Training<span class="m-badge">M</span></td><td><span class="status-pend">Pend-Pre-Emp</span></td><td class="day-red">40</td></tr>
+                <tr><td>Greenville</td><td>Assistant Retail Manager<span class="m-badge">M</span></td><td><span class="status-ready">New Hire Ready</span></td><td class="day-red">35</td></tr>
+                <tr><td>McKinney</td><td>Hard Lines Pricer</td><td><span class="status-vacant">Vacant</span></td><td class="day-red">34</td></tr>
+                <tr><td>Lamar Outlet</td><td>Transportation Driver</td><td><span class="status-pend">Pend-Pre-Emp</span></td><td class="day-red">31</td></tr>
+                <tr><td>Corporate</td><td>Transportation Manager<span class="m-badge">M</span></td><td><span class="status-ready">New Hire Ready</span></td><td class="day-red">28</td></tr>
+                <tr><td>Lamar Outlet</td><td>Transportation Driver</td><td><span class="status-pend">Pend-Pre-Emp</span></td><td class="day-red">25</td></tr>
+                <tr><td>McKinney</td><td>Cashier</td><td><span class="status-vacant">Vacant</span></td><td class="day-red">24</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-head">TOP 10 LONGEST-OPEN VACANCIES <span class="badge">10 SHOWN &middot; 25 OPEN</span></div>
+          <div class="block" style="padding:0;">
+            <table>
+              <thead><tr><th>Role &middot; Location</th><th>Days Open</th><th>Req&rarr;1st Intv</th><th>Since Last Intv</th></tr></thead>
+              <tbody>
+                <tr><td>Asst Retail Mgr &middot; Sulphur Springs<span class="m-badge">M</span></td><td class="day-red">58</td><td>49</td><td class="day-red">9</td></tr>
+                <tr><td>Hard Lines Pricer &middot; McKinney</td><td class="day-red">34</td><td>32</td><td class="day-green">2</td></tr>
+                <tr><td>Cashier &middot; McKinney</td><td class="day-red">24</td><td>22</td><td class="day-green">2</td></tr>
+                <tr><td>Retail Store Mgr &middot; Greenville<span class="m-badge">M</span></td><td class="day-amber">17</td><td>16</td><td class="day-green">1</td></tr>
+                <tr><td>Asst Retail Mgr &middot; McKinney<span class="m-badge">M</span></td><td class="day-amber">15</td><td style="color:var(--slate)">&mdash; none</td><td style="color:var(--slate)">&mdash; none</td></tr>
+                <tr><td>Hanger &middot; Gainesville</td><td>9</td><td>7</td><td class="day-green">2</td></tr>
+                <tr><td>Donor Greeter &middot; McKinney</td><td>9</td><td>7</td><td class="day-green">2</td></tr>
+                <tr><td>Asst Retail Mgr &middot; Denison<span class="m-badge">M</span></td><td>7</td><td>10</td><td style="color:var(--blue)">sched</td></tr>
+                <tr><td>Hanger &middot; McKinney</td><td>6</td><td>4</td><td class="day-green">2</td></tr>
+                <tr><td>Cashier &middot; Texarkana</td><td>3</td><td style="color:var(--slate)">&mdash; none</td><td style="color:var(--slate)">&mdash; none</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+
+      </div>
+    </div>
+
+<div class="section">
+      <div class="section-head">ONBOARDING &amp; PRE-EMPLOYMENT AGING <span class="badge">7 SHOWN &middot; 7 TOTAL</span></div>
+      <div class="block" style="padding:0;">
+        <table>
+          <thead>
+            <tr><th>Candidate</th><th>Role</th><th>Location</th><th>Health</th><th>Days Waiting</th><th>Blocker</th></tr>
+          </thead>
+          <tbody>
+            <tr class="aging-row"><td>Stanley, D.</td><td>Donor Greeter</td><td>McKinney</td><td><span class="status-ready">Onboarding</span></td><td class="days-green">3</td><td>Start date scheduled</td></tr>
+            <tr class="aging-row"><td>Patrizi, S.</td><td>Hanger</td><td>McKinney</td><td><span class="status-ready">Onboarding</span></td><td class="days-green">3</td><td>Start date scheduled</td></tr>
+            <tr class="aging-row"><td>Krahn, A.</td><td>Hardlines Pricer Floater</td><td>Sulphur Springs</td><td><span class="status-ready">Onboarding</span></td><td class="days-green">3</td><td>Start date scheduled</td></tr>
+            <tr class="aging-row"><td>Wolford, B.</td><td>Sorter</td><td>Mount Pleasant</td><td><span class="status-ready">Onboarding</span></td><td class="days-warn">6</td><td>Awaiting IT setup (work email)</td></tr>
+            <tr class="aging-row"><td>Line, M.</td><td>Hanger</td><td>Greenville</td><td><span class="status-ready">Onboarding</span></td><td class="days-hot">11</td><td>Missing Direct Deposit docs</td></tr>
+            <tr class="aging-row"><td>Chen, R.</td><td>Retail Assistant Mgr</td><td>Denison</td><td><span class="status-pend">Pre-Emp Pending Transfer</span></td><td class="days-warn">7</td><td>Awaiting current-store release</td></tr>
+            <tr class="aging-row"><td>Nunez, J.</td><td>Retail Assistant Mgr</td><td>Corporate</td><td><span class="status-pend">Pre-Emp Pending Transfer</span></td><td class="days-hot">12</td><td>Cross-region approval pending</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ROW B: WATCH + NEW (side by side) -->
+    <div class="section">
+      <div class="grid-2">
+
+        <div>
+          <div class="section-head">WATCH &middot; APPROACHING SLA <span class="badge">TOP 5 OF 7</span></div>
+          <div class="block" style="padding:0;">
+            <div class="band-header watch">
+              <span>&#9679; Watch &middot; approaching SLA</span>
+              <div class="band-r"><span class="sub">top 5 shown of 7</span><span class="cnt">5</span></div>
+            </div>
+            <table>
+              <thead><tr><th>Location</th><th>Role</th><th>Health</th><th>Days</th></tr></thead>
+              <tbody>
+                <tr><td>Greenville</td><td>Retail Store Manager<span class="m-badge">M</span></td><td><span class="status-vacant">Vacant</span></td><td class="day-amber">17</td></tr>
+                <tr><td>Denison</td><td>Assistant Retail Manager<span class="m-badge">M</span></td><td><span class="status-pend">Pend-Transfer</span></td><td class="day-amber">16</td></tr>
+                <tr><td>Durant</td><td>Assistant Retail Manager<span class="m-badge">M</span></td><td><span class="status-pend">Pend-Pre-Emp</span></td><td class="day-amber">15</td></tr>
+                <tr><td>McKinney</td><td>Assistant Retail Manager<span class="m-badge">M</span></td><td><span class="status-vacant">Vacant</span></td><td class="day-amber">13</td></tr>
+                <tr><td>Gainesville</td><td>Hanger</td><td><span class="status-vacant">Vacant</span></td><td class="day-amber">12</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-head">NEW &middot; OPENED THIS WEEK <span class="badge">TOP 5 OF 9</span></div>
+          <div class="block" style="padding:0;">
+            <div class="band-header new">
+              <span>&#9679; New &middot; opened this week</span>
+              <div class="band-r"><span class="sub">top 5 shown of 9</span><span class="cnt">5</span></div>
+            </div>
+            <table>
+              <thead><tr><th>Location</th><th>Role</th><th>Health</th><th>Days</th></tr></thead>
+              <tbody>
+                <tr><td>Bonham</td><td>Hanger</td><td><span class="status-vacant">Vacant</span></td><td class="day-green">5</td></tr>
+                <tr><td>Denison</td><td>Cashier</td><td><span class="status-vacant">Vacant</span></td><td class="day-green">4</td></tr>
+                <tr><td>Texarkana</td><td>Cashier</td><td><span class="status-vacant">Vacant</span></td><td class="day-green">3</td></tr>
+                <tr><td>McKinney</td><td>Donor Greeter</td><td><span class="status-vacant">Vacant</span></td><td class="day-green">2</td></tr>
+                <tr><td>Paris</td><td>Assistant Retail Manager<span class="m-badge">M</span></td><td><span class="status-vacant">Vacant</span></td><td class="day-green">1</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <div class="block" style="border-radius:4px;margin-top:12px;">
+        <div class="show-all">Show all queued (6 more) <span class="arrow">&rarr;</span></div>
+
+            <div style="padding:8px 14px;font-size:10px;color:var(--slate);background:white;border-top:1px solid #EEF0F3;">
+              <b>Banding rule:</b> Critical = SLA breached (Mgmt &gt;21d, Hourly &gt;14d, all shown). Watch = 50-100% of SLA (Mgmt 11-21d, Hourly 7-14d, top 5). New = &lt;50% of SLA (top 5). <span class="m-badge">M</span> = management role. When the queue exceeds ~20, everything past the visible bands rolls under &ldquo;Show all queued.&rdquo;
+            </div>
+      </div>
+    </div>
+
+    <!-- RECRUITER ACTIVITY -->
+    <div class="section">
+      <div class="section-head">RECRUITER ACTIVITY &mdash; LAST 30 DAYS</div>
+      <div class="block" style="padding:0;">
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2">Recruiter</th>
+              <th rowspan="2">Interviews Set Up</th>
+              <th rowspan="2">Hires</th>
+              <th rowspan="2">Intv&rarr;Hire</th>
+              <th colspan="2" style="text-align:center;">Avg Req&rarr;1st Intv</th>
+              <th colspan="2" style="text-align:center;">Avg Since Last Intv</th>
+              <th rowspan="2">Feedback Late</th>
+            </tr>
+            <tr>
+              <th style="background:var(--blue);">Mgmt</th><th style="background:var(--blue);">Hourly</th>
+              <th style="background:var(--blue);">Mgmt</th><th style="background:var(--blue);">Hourly</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="rec-name">CS</td><td>19</td><td>15</td><td>79%</td><td>17.0</td><td>12.8</td><td class="day-green">4</td><td class="day-green">1</td><td class="day-green">0</td></tr>
+            <tr><td class="rec-name">SF <small>(ex.)</small></td><td>8</td><td>6</td><td>75%</td><td>15</td><td>12</td><td>&check;</td><td class="day-green">2</td><td class="day-green">1</td></tr>
+            <tr><td class="rec-name">MP <small>(ex.)</small></td><td>6</td><td>4</td><td>67%</td><td>20</td><td>14</td><td class="day-amber">12</td><td class="day-amber">7</td><td class="day-amber">2</td></tr>
+            <tr><td class="rec-name">KC <small>(ex.)</small></td><td>4</td><td>3</td><td>75%</td><td>12</td><td>10</td><td class="day-red">No intv &triangle;</td><td class="day-green">3</td><td class="day-green">0</td></tr>
+            <tr><td class="rec-name">SF</td><td>3</td><td>2</td><td>67%</td><td>&mdash;</td><td>13.3</td><td>&check;</td><td class="day-green">1</td><td class="day-green">1</td></tr>
+            <tr><td class="rec-name">AG <small>(ex.)</small></td><td>2</td><td>1</td><td>50%</td><td>18</td><td>&mdash;</td><td class="day-red">22</td><td>&check;</td><td class="day-red">1</td></tr>
+            <tr style="background:#F7F9FB;font-weight:700;"><td>Total / Avg</td><td>42</td><td>31</td><td>74%</td><td>16.4</td><td>12.4</td><td>&mdash;</td><td>&mdash;</td><td>4</td></tr>
+          </tbody>
+        </table>
+        <div style="padding:8px 12px;font-size:10px;color:var(--slate);">Feedback Late = interview outcomes with no feedback logged after 5+ days. Cell colors: Hourly &le;5 <b style="color:var(--green)">green</b>/6&ndash;9 <b style="color:var(--amber)">amber</b>/&ge;10 <b style="color:var(--red)">red</b> &middot; Mgmt &le;10/11&ndash;20/&ge;21.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">GOODWILL USA &middot; TA TACTICAL DASHBOARD &middot; MOCKUP for review</div>
+</div>
+</body>
+</html>

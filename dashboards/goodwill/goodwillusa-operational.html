@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Goodwill USA 2.1 · TA Operational Dashboard · MOCKUP</title>
+<style>
+  :root{
+    --navy:#12284C; --navy-soft:#E4E9F2;
+    --blue:#2E6FD6; --blue-soft:#DCE7F7;
+    --teal:#1F9E8F; --teal-soft:#D6EFEB;
+    --green:#2E9E5B; --green-soft:#DCF0E4;
+    --amber:#E8A33D; --amber-soft:#FBEBD0;
+    --red:#D64550; --red-soft:#F7DDDF;
+    --lblue:#5B9BD5; --lblue-soft:#E0EDF7;
+    --slate:#6B7A8D; --slate-soft:#EDF0F3;
+    --amber-text:#8A5D06; --green-text:#186A3B; --red-text:#8B1E28; --slate-text:#4A5566;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Calibri','Segoe UI',sans-serif;background:#F0F2F5;color:#222;font-size:13px;line-height:1.4}
+  .frame{max-width:1800px;margin:0 auto;background:white;min-height:100vh}
+
+  .head{background:var(--navy);color:white;padding:18px 28px;border-bottom:4px solid var(--amber)}
+  .head .row{display:flex;justify-content:space-between;align-items:baseline}
+  .head h1{font-size:22px;font-weight:700;letter-spacing:-0.2px}
+  .head .env{font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:1px}
+  .head .sub{margin-top:4px;font-size:12px;color:rgba(255,255,255,0.85);font-style:italic}
+
+  .filters{padding:14px 28px;background:#FAFBFC;border-bottom:1px solid #E5E5E5;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .filter{background:white;border:1px solid #D5DAE0;border-radius:20px;padding:5px 12px;font-size:11px;color:var(--navy);cursor:pointer}
+  .filter b{color:var(--slate);font-weight:600;margin-right:5px;font-size:10px;letter-spacing:0.5px}
+  .filter::after{content:" ▾";color:var(--slate);font-size:9px;margin-left:4px}
+  .filters .note{margin-left:auto;font-size:11px;color:var(--slate);font-style:italic}
+
+  .body{padding:22px 28px}
+  .section{margin-bottom:22px}
+  .section-head{background:var(--navy);color:white;padding:9px 14px;font-size:11px;font-weight:700;letter-spacing:1.5px;border-radius:4px 4px 0 0;display:flex;justify-content:space-between;align-items:center}
+  .section-head .badge{background:var(--amber);color:var(--navy);padding:2px 8px;border-radius:3px;font-size:10px}
+
+  .kpi-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:20px}
+  .kpi{background:white;border:1px solid #E0E4E8;border-radius:4px;padding:10px 12px;border-top:3px solid var(--blue);display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;row-gap:6px;align-items:center}
+  .kpi.urgent{border-top-color:var(--red)}
+  .kpi.urgent .val{color:var(--red-text)}
+  .kpi .lbl{grid-column:1 / span 2;font-size:9px;letter-spacing:1.2px;color:var(--slate);font-weight:700;text-transform:uppercase}
+  .kpi .val{grid-column:1;grid-row:2;font-size:26px;color:var(--navy);font-weight:700;line-height:1;margin-top:0}
+  .kpi .split{grid-column:2;grid-row:2;display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:0;padding-top:0;border-top:0}
+  .kpi .split div{text-align:center;padding:2px 3px;border-radius:2px}
+  .kpi .split .mgmt{background:var(--amber-soft);color:var(--amber-text);font-weight:700}
+  .kpi .split .hrly{background:var(--green-soft);color:var(--green-text);font-weight:700}
+  .kpi .split small{display:block;font-size:8px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--slate);margin-bottom:1px}
+  .kpi .split b{font-size:12px}
+
+  .block{background:white;border:1px solid #E0E4E8;border-radius:0 0 4px 4px;padding:14px 16px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  .grid-32{display:grid;grid-template-columns:1.2fr 0.8fr;gap:16px}
+
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  table th{background:var(--navy);color:white;padding:7px 9px;text-align:left;font-size:10px;letter-spacing:0.8px;font-weight:700;text-transform:uppercase}
+  table td{padding:7px 9px;border-bottom:1px solid #EEF0F3;color:var(--navy)}
+  table tr:last-child td{border-bottom:0}
+  table tr:hover{background:#F7F9FB}
+  .num-r{text-align:right}
+  .day-red{color:var(--red-text);font-weight:700}
+  .day-amber{color:var(--amber-text);font-weight:700}
+  .day-green{color:var(--green-text);font-weight:700}
+
+  /* Type of Post - horizontal segmented bar */
+  .seg-bar{display:flex;height:40px;border-radius:4px;overflow:hidden;margin-bottom:10px;font-size:13px;color:white;font-weight:700}
+  .seg{display:flex;align-items:center;justify-content:center;padding:0 8px}
+  .seg small{opacity:1;margin-left:6px;font-weight:600;font-size:12px}
+  .legend-row{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--navy)}
+  .legend-row .lg{display:inline-flex;align-items:center;gap:5px}
+  .legend-row .lg .sw{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+  /* Heatmap-style department table */
+  .heat-cell{padding:5px 8px;border-radius:3px;font-weight:700;text-align:center;font-size:12px;color:white}
+  .heat-lo{background:var(--green)}
+  .heat-md{background:var(--amber);color:var(--navy)}
+  .heat-hi{background:var(--red)}
+  .heat-none{background:var(--slate-soft);color:var(--slate)}
+
+  /* Bars */
+  .bar-row{display:grid;grid-template-columns:95px 1fr 30px;align-items:center;gap:6px;padding:2px 0;font-size:11px}
+  .bar-row .lb{color:var(--navy);font-weight:600}
+  .bar-row .track{background:var(--slate-soft);height:10px;border-radius:2px;overflow:hidden;position:relative;display:block}
+  .bar-row .fill{background:var(--blue);height:100%;display:block}
+  .bar-row .fill.red{background:var(--red)}
+  .bar-row .fill.amber{background:var(--amber)}
+  .bar-row .fill.green{background:var(--green)}
+  .bar-row .fill.teal{background:var(--teal)}
+  .bar-row .vl{text-align:right;color:var(--navy);font-weight:700;font-size:11px}
+
+  /* Donut placeholder using conic-gradient */
+  .donut{width:150px;height:150px;border-radius:50%;background:conic-gradient(var(--blue) 0 65%, var(--amber) 65% 87%, var(--teal) 87% 100%);position:relative;margin:0 auto}
+  .donut::after{content:"";position:absolute;top:22%;left:22%;width:56%;height:56%;background:white;border-radius:50%}
+  .donut-c{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:1}
+  .donut-c .n{font-size:22px;font-weight:700;color:var(--navy)}
+  .donut-c .l{font-size:9px;color:var(--slate);letter-spacing:0.8px;text-transform:uppercase}
+
+  .donut-employ{background:conic-gradient(var(--blue) 0 58%, var(--teal) 58% 88%, var(--amber) 88% 98%, var(--slate) 98% 100%)}
+
+  .month-row{display:grid;grid-template-columns:55px 1fr 78px;align-items:center;gap:8px;padding:5px 0;font-size:11px;border-bottom:1px solid #F0F0F0}
+  .month-row:last-child{border-bottom:0}
+  .month-row .m{color:var(--navy);font-weight:700}
+  .month-row .dual-track{display:flex;flex-direction:column;gap:3px}
+  .month-row .yr-line{display:grid;grid-template-columns:22px 1fr 34px;align-items:center;gap:6px}
+  .month-row .yr-line .yl{font-size:9px;color:var(--slate);font-weight:700;letter-spacing:0.5px}
+  .month-row .yr-line .track{background:var(--slate-soft);height:14px;border-radius:2px;overflow:hidden;border:1px solid #DDE0E8;display:block}
+  .month-row .yr-line .fill{background:var(--amber);height:100%;transition:width 0.3s ease;display:block;background-image:repeating-linear-gradient(45deg,transparent 0 4px,rgba(0,0,0,0.10) 4px 5px)}
+  .month-row .yr-line.prev .fill{background:var(--lblue)}
+  .month-row .yr-line.progress .fill{background:var(--amber);opacity:0.85;background-image:repeating-linear-gradient(45deg,transparent 0 4px,rgba(0,0,0,0.20) 4px 6px)}
+  .month-row .yr-line .v{text-align:right;color:var(--navy);font-weight:700;font-size:10px}
+  .delta-chip{font-size:10px;font-weight:700;padding:3px 7px;border-radius:12px;text-align:center;white-space:nowrap}
+  .delta-chip.up{background:var(--green-soft);color:var(--green-text)}
+  .delta-chip.down{background:var(--red-soft);color:var(--red-text)}
+  .delta-chip.flat{background:var(--slate-soft);color:var(--slate-text)}
+
+  .backfill-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px}
+  .bf{background:white;border:1px solid #E0E4E8;padding:10px;border-radius:3px;text-align:center;border-top:3px solid var(--blue)}
+  .bf.g{border-top-color:var(--green)}
+  .bf.r{border-top-color:var(--red)}
+  .bf .lbl{font-size:8px;letter-spacing:1px;color:var(--slate);font-weight:700;text-transform:uppercase}
+  .bf .val{font-size:20px;font-weight:700;color:var(--navy);margin-top:3px}
+
+  .footer{background:var(--navy);color:rgba(255,255,255,0.7);padding:12px 28px;font-size:10px;text-align:center;letter-spacing:1px}
+  .mockup-badge{position:fixed;top:12px;right:12px;background:var(--red);color:white;padding:6px 14px;font-size:10px;letter-spacing:2px;font-weight:700;border-radius:3px;z-index:999;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+
+  /* Responsive breakpoints */
+  @media (max-width:1024px){
+    .frame{max-width:100%}
+    .body{padding:16px 20px}
+    .head,.filters,.footer{padding-left:20px;padding-right:20px}
+    .filters{flex-wrap:wrap;gap:8px}
+    .kpi-strip{grid-template-columns:repeat(4,1fr)}
+    .grid-2,.grid-3,.grid-32{grid-template-columns:1fr}
+    .block{overflow-x:auto}
+    .seg-bar{flex-wrap:wrap}
+    .seg{min-width:120px}
+    .month-row{grid-template-columns:60px 1fr 80px;gap:8px}
+    .month-row .yr-line{grid-template-columns:25px 1fr 32px;gap:6px}
+    .backfill-mini{grid-template-columns:repeat(2,1fr) !important}
+    .donut{width:130px;height:130px}
+  }
+  @media (max-width:720px){
+    .kpi-strip{grid-template-columns:1fr 1fr}
+    .kpi .val{font-size:24px}
+    .filters .note{display:none}
+    .month-row{grid-template-columns:1fr}
+    .month-row .m{font-size:11px}
+  }
+</style>
+</head>
+<body>
+<div class="mockup-badge">MOCKUP · OPERATIONAL</div>
+<div class="frame">
+
+  <div class="head">
+    <div class="row">
+      <h1>Goodwill USA 2.1 &mdash; TA Operational Dashboard</h1>
+      <span class="env">GOODWILL USA &middot; HR &rarr; TA</span>
+    </div>
+    <div class="sub">Leadership view &middot; Every metric calculated live from your requisition data &middot; Refreshed daily</div>
+  </div>
+
+  <div class="filters">
+    <span class="filter"><b>Location</b>All</span>
+    <span class="filter"><b>Recruiter</b>All</span>
+    <span class="filter"><b>Health</b>All</span>
+    <span class="filter"><b>Type</b>Mgmt + Hourly</span>
+    <span class="filter"><b>Date</b>Last 90 days</span>
+    <span class="note">Report run: Sep 3, 2026</span>
+  </div>
+
+  <div class="body">
+
+    <!-- TOP KPI STRIP (structural) -->
+    <div class="kpi-strip">
+      <div class="kpi"><div class="lbl">Open Requisitions</div><div class="val">13</div><div class="split"><div class="mgmt"><small>Mgmt</small><b>5</b></div><div class="hrly"><small>Hourly</small><b>8</b></div></div></div>
+      <div class="kpi"><div class="lbl">Vacancy Rate</div><div class="val">4.2%</div><div class="split"><div class="mgmt"><small>Mgmt</small><b>5.1%</b></div><div class="hrly"><small>Hourly</small><b>3.8%</b></div></div></div>
+      <div class="kpi"><div class="lbl">Time to Fill</div><div class="val">48.9</div><div class="split"><div class="mgmt"><small>Mgmt</small><b>60.9</b></div><div class="hrly"><small>Hourly</small><b>44.0</b></div></div></div>
+      <div class="kpi"><div class="lbl">30-Day Fill Rate</div><div class="val">59.6%</div><div class="split"><div class="mgmt"><small>Mgmt</small><b>40.5%</b></div><div class="hrly"><small>Hourly</small><b>63.5%</b></div></div></div>
+      <div class="kpi"><div class="lbl">Time to Pre-Emp Screen Completion</div><div class="val">6.8</div><div class="split"><div class="mgmt"><small>Mgmt</small><b>11.7</b></div><div class="hrly"><small>Hourly</small><b>5.7</b></div></div></div>
+      <div class="kpi"><div class="lbl">Time to First Interview</div><div class="val">16.0</div><div class="split"><div class="mgmt"><small>Mgmt</small><b>21.3</b></div><div class="hrly"><small>Hourly</small><b>13.6</b></div></div></div>
+      <div class="kpi urgent"><div class="lbl">Reqs. Without Recruiter Assigned</div><div class="val">3</div><div class="split"><div class="mgmt"><small>Mgmt</small><b>1</b></div><div class="hrly"><small>Hourly</small><b>2</b></div></div></div>
+    </div>
+
+    <!-- ROW A · REQUISITION TYPE MIX + TRAILING 90-DAY REQ VOLUME -->
+    <div class="section">
+      <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;align-items:start;">
+
+        <div>
+          <div class="section-head">REQUISITION TYPE MIX <span class="badge">53 REQS &middot; LAST 90 DAYS</span></div>
+          <div class="block">
+            <div class="seg-bar">
+              <div class="seg" style="background:var(--amber);color:var(--navy);width:62%;white-space:nowrap;">Backfill<small>33 &middot; 62%</small></div>
+              <div class="seg" style="background:var(--blue);width:15%;white-space:nowrap;">15%</div>
+              <div class="seg" style="background:var(--green);width:13%;white-space:nowrap;">13%</div>
+              <div class="seg" style="background:var(--slate-text);width:10%;white-space:nowrap;">10%</div>
+            </div>
+            <div class="legend-row" style="margin-bottom:14px;">
+              <span class="lg"><span class="sw" style="background:var(--amber);"></span><b>Backfill</b> 33 &middot; 62% &mdash; replacement hire for turnover</span>
+              <span class="lg"><span class="sw" style="background:var(--blue);"></span><b>New Job Description</b> 8 &middot; 15% &mdash; new role type</span>
+              <span class="lg"><span class="sw" style="background:var(--green);"></span><b>Added to Budget</b> 7 &middot; 13% &mdash; net-new headcount approved</span>
+              <span class="lg"><span class="sw" style="background:var(--slate-text);"></span><b>Hired Out of Process</b> 5 &middot; 10% &mdash; req opened outside standard workflow</span>
+            </div>
+            <div style="font-size:10px;color:var(--slate);margin-top:8px;font-style:italic;">Backfill volume tracks turnover-driven hiring. Hired Out of Process count flags reqs opened outside standard workflow &mdash; investigate the workflow gap with hiring managers.</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-head">TRAILING 90-DAY REQ VOLUME &middot; YoY COMPARISON</div>
+          <div class="block">
+
+            <div style="display:flex;gap:16px;justify-content:flex-end;font-size:10px;color:var(--slate);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #EEF0F3;">
+              <span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:12px;height:8px;background:var(--amber);border-radius:1px;display:inline-block;"></span><b style="color:var(--navy);">2026</b> current</span>
+              <span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:12px;height:8px;background:var(--lblue);border-radius:1px;display:inline-block;"></span><b style="color:var(--navy);">2025</b> prior</span>
+              <span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:12px;height:8px;background:var(--amber);opacity:0.65;background-image:repeating-linear-gradient(45deg,transparent 0 3px,rgba(255,255,255,0.35) 3px 5px);border-radius:1px;display:inline-block;"></span>current month partial</span>
+            </div>
+
+            <div class="month-row">
+              <span class="m">Jul '26</span>
+              <div class="dual-track">
+                <div class="yr-line"><span class="yl">'26</span><span class="track"><span class="fill" style="width:85%;"></span></span><span class="v">23</span></div>
+                <div class="yr-line prev"><span class="yl">'25</span><span class="track"><span class="fill" style="width:96%;"></span></span><span class="v">26</span></div>
+              </div>
+              <span class="delta-chip down">&darr; 3 &middot; -12%</span>
+            </div>
+            <div class="month-row">
+              <span class="m">Aug '26</span>
+              <div class="dual-track">
+                <div class="yr-line"><span class="yl">'26</span><span class="track"><span class="fill" style="width:78%;"></span></span><span class="v">21</span></div>
+                <div class="yr-line prev"><span class="yl">'25</span><span class="track"><span class="fill" style="width:89%;"></span></span><span class="v">24</span></div>
+              </div>
+              <span class="delta-chip down">&darr; 3 &middot; -13%</span>
+            </div>
+            <div class="month-row">
+              <span class="m">Sep '26</span>
+              <div class="dual-track">
+                <div class="yr-line progress"><span class="yl">'26</span><span class="track"><span class="fill" style="width:30%;"></span></span><span class="v">8*</span></div>
+                <div class="yr-line prev"><span class="yl">'25</span><span class="track"><span class="fill" style="width:81%;"></span></span><span class="v">22</span></div>
+              </div>
+              <span class="delta-chip flat">current month partial</span>
+            </div>
+
+            <div style="font-size:9px;color:var(--slate);margin-top:8px;font-style:italic;padding-top:6px;border-top:1px solid #EEE;">
+              <b>Trailing 90 days</b> (current month + 2 prior) vs same trailing window in prior year. <b>3-mo total:</b> '26 <b style="color:var(--navy);">52</b> vs '25 <b style="color:var(--navy);">72</b> &middot; <span style="color:var(--red-text);font-weight:700;">&Delta; -20 (-28%)</span> &middot; * Sep in progress.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TOP 10 DEPARTMENTS · INTERVIEW URGENCY + HIRE SOURCE MIX (side by side) -->
+    <div class="section">
+      <div style="display:grid;grid-template-columns:2.4fr 1fr;gap:16px;align-items:start;">
+      <div>
+      <div class="section-head">REQUISITION HEALTH BY DEPARTMENT <span class="badge">15 SHOWN &middot; 15 DEPARTMENTS</span></div>
+      <div class="block">
+
+        <div class="backfill-mini" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px;">
+          <div class="bf"><div class="lbl">New Reqs · Trailing 60d</div><div class="val">53</div></div>
+          <div class="bf g"><div class="lbl">Fills · Trailing 60d</div><div class="val">30</div></div>
+          <div class="bf" style="border-top-color:var(--amber);"><div class="lbl">Open Reqs</div><div class="val">23</div></div>
+          <div class="bf"><div class="lbl">Time to Fill</div><div class="val">15.2</div></div>
+        </div>
+
+        <table>
+          <thead>
+            <tr><th>Department</th><th class="num-r">Hires 90d</th><th class="num-r">Reqs 30d</th><th class="num-r">Open Now</th><th class="num-r">Avg Req &rarr; 1st Intv</th><th class="num-r">Days Since Last Intv</th><th style="text-align:center;">Health</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Sulphur Springs</td><td class="num-r">2</td><td class="num-r">2</td><td class="num-r">2</td><td class="num-r day-red">22</td><td class="num-r day-red">9</td><td><span class="heat-cell heat-hi" role="status" aria-label="Requisition health: critical">CRITICAL</span></td></tr>
+            <tr><td>Corporate</td><td class="num-r">2</td><td class="num-r">2</td><td class="num-r">2</td><td class="num-r day-red">18</td><td class="num-r day-red">8</td><td><span class="heat-cell heat-hi" role="status" aria-label="Requisition health: critical">CRITICAL</span></td></tr>
+            <tr><td>Lamar Outlet</td><td class="num-r">1</td><td class="num-r">1</td><td class="num-r">2</td><td class="num-r day-amber">15</td><td class="num-r day-red">7</td><td><span class="heat-cell heat-hi" role="status" aria-label="Requisition health: critical">CRITICAL</span></td></tr>
+            <tr><td>Greenville</td><td class="num-r">5</td><td class="num-r">4</td><td class="num-r">3</td><td class="num-r day-amber">14</td><td class="num-r day-amber">6</td><td><span class="heat-cell heat-md" role="status" aria-label="Requisition health: at risk">AT RISK</span></td></tr>
+            <tr><td>McKinney</td><td class="num-r">5</td><td class="num-r">7</td><td class="num-r">4</td><td class="num-r day-green">8</td><td class="num-r day-green">2</td><td><span class="heat-cell heat-lo" role="status" aria-label="Requisition health: on target">ON TARGET</span></td></tr>
+            <tr><td>Durant</td><td class="num-r">3</td><td class="num-r">3</td><td class="num-r">1</td><td class="num-r day-green">6</td><td class="num-r day-green">3</td><td><span class="heat-cell heat-lo" role="status" aria-label="Requisition health: on target">ON TARGET</span></td></tr>
+            <tr><td>Texarkana</td><td class="num-r">3</td><td class="num-r">4</td><td class="num-r">1</td><td class="num-r day-green">4</td><td class="num-r day-green">2</td><td><span class="heat-cell heat-lo" role="status" aria-label="Requisition health: on target">ON TARGET</span></td></tr>
+            <tr><td>Denison</td><td class="num-r">3</td><td class="num-r">2</td><td class="num-r">1</td><td class="num-r day-green">5</td><td class="num-r day-green">4</td><td><span class="heat-cell heat-lo" role="status" aria-label="Requisition health: on target">ON TARGET</span></td></tr>
+            <tr><td>Gainesville</td><td class="num-r">2</td><td class="num-r">2</td><td class="num-r">1</td><td class="num-r day-green">7</td><td class="num-r day-green">3</td><td><span class="heat-cell heat-lo" role="status" aria-label="Requisition health: on target">ON TARGET</span></td></tr>
+            <tr><td>Mount Pleasant</td><td class="num-r">3</td><td class="num-r">2</td><td class="num-r">0</td><td class="num-r" style="color:var(--slate);">&mdash;</td><td class="num-r" style="color:var(--slate);">&mdash;</td><td><span class="heat-cell heat-none">&mdash;</span></td></tr>
+            <tr><td>Paris</td><td class="num-r">2</td><td class="num-r">2</td><td class="num-r">1</td><td class="num-r day-green">6</td><td class="num-r day-green">3</td><td><span class="heat-cell heat-lo" role="status" aria-label="Requisition health: on target">ON TARGET</span></td></tr>
+            <tr><td>Bonham</td><td class="num-r">2</td><td class="num-r">1</td><td class="num-r">1</td><td class="num-r day-green">8</td><td class="num-r day-green">4</td><td><span class="heat-cell heat-lo" role="status" aria-label="Requisition health: on target">ON TARGET</span></td></tr>
+            <tr><td>Tyler</td><td class="num-r">3</td><td class="num-r">3</td><td class="num-r">2</td><td class="num-r day-amber">12</td><td class="num-r day-amber">5</td><td><span class="heat-cell heat-md" role="status" aria-label="Requisition health: at risk">AT RISK</span></td></tr>
+            <tr><td>Longview</td><td class="num-r">2</td><td class="num-r">2</td><td class="num-r">1</td><td class="num-r day-green">9</td><td class="num-r day-green">4</td><td><span class="heat-cell heat-lo" role="status" aria-label="Requisition health: on target">ON TARGET</span></td></tr>
+            <tr><td>Athens</td><td class="num-r">1</td><td class="num-r">1</td><td class="num-r">0</td><td class="num-r" style="color:var(--slate);">&mdash;</td><td class="num-r" style="color:var(--slate);">&mdash;</td><td><span class="heat-cell heat-none">&mdash;</span></td></tr>
+          </tbody>
+        </table>
+        <div style="padding:10px 0 0 0;font-size:10px;color:var(--slate);"><b>Health</b> reads from &ldquo;Days Since Last Interview&rdquo;: <span style="color:var(--red);font-weight:700;">Critical</span> 7+ days &middot; <span style="color:var(--amber);font-weight:700;">At Risk</span> 5-6 days &middot; <span style="color:var(--green);font-weight:700;">On Target</span> under 5 days. All active departments shown.</div>
+      </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+          <div>
+        <div class="section-head">HIRE SOURCE MIX</div>
+        <div class="block" style="text-align:center;">
+          <div style="position:relative;margin:6px 0 12px 0;">
+            <div class="donut"></div>
+            <div class="donut-c"><div class="n">30</div><div class="l">Placements 90d</div></div>
+          </div>
+          <div class="legend-row" style="justify-content:center;gap:10px;flex-wrap:wrap;">
+            <span class="lg"><span class="sw" style="background:var(--blue);"></span>External Hire <b>65%</b></span>
+            <span class="lg"><span class="sw" style="background:var(--amber);"></span>Boomerang <b>22%</b></span>
+            <span class="lg"><span class="sw" style="background:var(--teal);"></span>Internal Mobility <b>13%</b></span>
+          </div>
+          <div style="font-size:10px;color:var(--slate);margin-top:8px;font-style:italic;">Internal Mobility % signals succession pipeline health (<i>LinkedIn Talent Insights</i>). Boomerang % signals employer-brand strength (<i>Kevin Sheridan</i>, <i>Building a Magnetic Culture</i>).</div>
+        </div>
+          <div><div class="section-head">TIME-TO-FILL BY ROLE <span class="badge">TOP 10 OF 15 ROLES &middot; TRAILING 90D</span></div>
+          <div class="block">
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <div>
+                <div style="font-size:10px;letter-spacing:1px;color:var(--red);font-weight:700;text-transform:uppercase;margin-bottom:6px;padding-bottom:3px;border-bottom:2px solid var(--red);display:inline-block;padding-right:10px;">HARD-TO-FILL ROLES &middot; TOP 5</div>
+                <div class="bar-row"><span class="lb">Assistant Retail Mgr</span><span class="track"><span class="fill red" style="width:96%;"></span></span><span class="vl">60d</span></div>
+                <div class="bar-row"><span class="lb">Retail Store Manager</span><span class="track"><span class="fill red" style="width:92%;"></span></span><span class="vl">58d</span></div>
+                <div class="bar-row"><span class="lb">Operations Training Coach</span><span class="track"><span class="fill red" style="width:82%;"></span></span><span class="vl">51d</span></div>
+                <div class="bar-row"><span class="lb">Retail Manager In Training</span><span class="track"><span class="fill amber" style="width:65%;"></span></span><span class="vl">41d</span></div>
+                <div class="bar-row"><span class="lb">Transportation Manager</span><span class="track"><span class="fill amber" style="width:58%;"></span></span><span class="vl">36d</span></div>
+              </div>
+              <div>
+                <div style="font-size:10px;letter-spacing:1px;color:var(--green);font-weight:700;text-transform:uppercase;margin-bottom:6px;padding-bottom:3px;border-bottom:2px solid var(--green);display:inline-block;padding-right:10px;">QUICKEST BACKFILL &middot; TOP 5</div>
+                <div class="bar-row"><span class="lb">Sorter</span><span class="track"><span class="fill green" style="width:16%;"></span></span><span class="vl">10d</span></div>
+                <div class="bar-row"><span class="lb">Hanger</span><span class="track"><span class="fill green" style="width:18%;"></span></span><span class="vl">11d</span></div>
+                <div class="bar-row"><span class="lb">Cashier</span><span class="track"><span class="fill green" style="width:20%;"></span></span><span class="vl">12d</span></div>
+                <div class="bar-row"><span class="lb">Donor Greeter</span><span class="track"><span class="fill green" style="width:22%;"></span></span><span class="vl">14d</span></div>
+                <div class="bar-row"><span class="lb">Hardlines Pricer</span><span class="track"><span class="fill teal" style="width:29%;"></span></span><span class="vl">18d</span></div>
+              </div>
+            </div>
+            <div style="font-size:10px;color:var(--slate);margin-top:8px;font-style:italic;">Bars normalized to hardest-to-fill role. Management concentration at the top signals a succession-pipeline gap &mdash; expected in high-turnover environments, worth acting on.</div>
+          </div></div></div>
+        </div></div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">GOODWILL USA &middot; TA OPERATIONAL DASHBOARD &middot; MOCKUP for review</div>
+</div>
+</body>
+</html>
