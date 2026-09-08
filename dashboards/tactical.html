@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Guideway 1.0 · Tactical Dashboard · MOCKUP</title>
+<style>
+  :root{
+    --gw-blue:#1B75BC; --gw-green:#3AAA35;
+    --navy:#12284C; --navy-soft:#E4E9F2;
+    --blue:#2E6FD6; --blue-soft:#DCE7F7;
+    --teal:#1F9E8F; --teal-soft:#D6EFEB;
+    --amber:#E8A33D; --amber-soft:#FBEBD0;
+    --red:#D64550; --red-soft:#F7DDDF;
+    --lblue:#5B9BD5; --lblue-soft:#E0EDF7;
+    --slate:#6B7A8D; --slate-soft:#EDF0F3;
+    --amber-text:#8A5D06; --green-text:#186A3B; --red-text:#8B1E28; --slate-text:#4A5566;
+    --lvl-1:#0F4C81; --lvl-2:#1B75BC; --lvl-3:#3E9BAF; --lvl-4:#3AAA35; --lvl-5:#0F7A2C;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Calibri','Segoe UI',sans-serif;background:#F0F2F5;color:#222;font-size:13px;line-height:1.4}
+  .frame{max-width:1800px;margin:0 auto;background:white;min-height:100vh}
+
+  .head{background:linear-gradient(90deg,var(--gw-blue) 0%,var(--gw-green) 100%);color:white;padding:16px 24px;border-bottom:4px solid var(--navy)}
+  .head .row{display:flex;justify-content:space-between;align-items:baseline}
+  .head h2{font-size:18px;font-weight:700}
+  .head .env{font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:1px}
+  .head .sub{margin-top:4px;font-size:11px;color:rgba(255,255,255,0.9);font-style:italic}
+
+  .filters{padding:12px 24px;background:#FAFBFC;border-bottom:1px solid #E5E5E5;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .filter{background:white;border:1px solid #D5DAE0;border-radius:20px;padding:5px 12px;font-size:11px;color:var(--navy)}
+  .filter b{color:var(--slate);font-weight:600;margin-right:5px;font-size:10px;letter-spacing:0.5px}
+  .filter::after{content:" ▾";color:var(--slate);font-size:9px;margin-left:4px}
+  .filters .note{margin-left:auto;font-size:11px;color:var(--slate);font-style:italic}
+
+  /* How to read strip */
+  .read-strip{background:linear-gradient(90deg,var(--navy-soft) 0%,#F7F9FC 100%);border-top:1px solid #E5E5E5;border-bottom:1px solid #E5E5E5;padding:8px 24px;display:flex;gap:20px;align-items:center;flex-wrap:wrap;font-size:11px}
+  .read-strip .kicker{font-size:9px;letter-spacing:1.5px;color:var(--slate);font-weight:700;text-transform:uppercase}
+  .read-strip .grp{display:flex;align-items:center;gap:8px}
+  .read-strip .grp-lbl{font-size:9px;letter-spacing:1.2px;color:var(--slate);font-weight:700;text-transform:uppercase}
+  .read-strip .pill{display:inline-block;background:white;border:1px solid #D0D8E0;padding:2px 7px;border-radius:10px;font-size:10px;color:var(--navy);font-weight:600}
+  .read-strip .pill.sla{border-color:var(--amber);color:var(--amber-text)}
+  .read-strip .refresh{margin-left:auto;font-size:10px;color:var(--slate);font-style:italic}
+  .read-strip .refresh b{color:var(--navy);font-style:normal;font-weight:700}
+
+  .body{padding:22px 24px}
+  .section{margin-bottom:22px}
+  .section-head{background:var(--navy);color:white;padding:9px 14px;font-size:11px;font-weight:700;letter-spacing:1.5px;border-radius:4px 4px 0 0;display:flex;justify-content:space-between;align-items:center}
+  .section-head .badge{background:var(--gw-green);color:white;padding:2px 8px;border-radius:3px;font-size:10px}
+
+  .kpi-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:20px}
+  .kpi{background:white;border:1px solid #E0E4E8;border-radius:4px;padding:10px 12px;border-top:3px solid var(--gw-blue);display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;row-gap:6px;align-items:center}
+  .kpi.urgent{border-top-color:var(--red)}
+  .kpi.urgent .val{color:var(--red-text)}
+  .kpi.watch{border-top-color:var(--amber)}
+  .kpi .lbl{grid-column:1 / span 2;font-size:9px;letter-spacing:1.2px;color:var(--slate);font-weight:700;text-transform:uppercase}
+  .kpi .val{grid-column:1;grid-row:2;font-size:26px;color:var(--navy);font-weight:700;line-height:1}
+  .kpi .val small{font-size:11px;color:var(--slate);font-weight:600;margin-left:3px}
+  .kpi .aging{grid-column:2;grid-row:2;display:flex;gap:3px;font-size:9px;flex-direction:column}
+  .kpi .aging .bar{display:flex;gap:2px;height:6px}
+  .kpi .aging .bar span{flex:1;border-radius:1px}
+  .kpi .aging .b-ok{background:var(--gw-green)}
+  .kpi .aging .b-watch{background:var(--amber)}
+  .kpi .aging .b-crit{background:var(--red)}
+  .kpi .aging .lbl-row{display:flex;justify-content:space-between;color:var(--slate);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+
+  /* AT-RISK band */
+  .risk-band{background:var(--red-soft);border:2px solid var(--red);border-radius:6px;padding:14px 18px;margin-bottom:20px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .risk-band .big{font-size:38px;font-weight:700;color:var(--red-text);line-height:1;text-align:center;padding-right:14px;border-right:2px solid var(--red)}
+  .risk-band .big small{display:block;font-size:9px;letter-spacing:1.5px;color:var(--red-text);font-weight:700;text-transform:uppercase;margin-top:4px}
+  .risk-band .title{font-size:15px;font-weight:700;color:var(--red-text);margin-bottom:6px}
+  .risk-band .subline{font-size:11px;color:var(--navy);margin-bottom:8px;line-height:1.5}
+  .risk-band .items{display:flex;flex-wrap:wrap;gap:8px}
+  .risk-band .chip{background:white;border:1px solid var(--red);border-radius:14px;padding:4px 10px;font-size:11px;color:var(--navy);display:inline-flex;align-items:center;gap:6px}
+  .risk-band .chip b{color:var(--red-text)}
+  .risk-band .chip small{color:var(--slate);font-size:9px}
+
+  .block{background:white;border:1px solid #E0E4E8;border-radius:0 0 4px 4px;padding:14px 16px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  table th{background:var(--navy);color:white;padding:7px 9px;text-align:left;font-size:10px;letter-spacing:0.8px;font-weight:700;text-transform:uppercase}
+  table td{padding:7px 9px;border-bottom:1px solid #EEF0F3;color:var(--navy)}
+  table tr:last-child td{border-bottom:0}
+  table tr:hover{background:#F7F9FB}
+  .num-r{text-align:right}
+  .day-red{color:var(--red-text);font-weight:700}
+  .day-amber{color:var(--amber-text);font-weight:700}
+  .day-green{color:var(--green-text);font-weight:700}
+
+  /* Level pill */
+  .lvl-pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;color:white}
+  .lvl-pill.lvl-1{background:var(--lvl-1)}
+  .lvl-pill.lvl-2{background:var(--lvl-2)}
+  .lvl-pill.lvl-3{background:var(--lvl-3)}
+  .lvl-pill.lvl-4{background:var(--lvl-4)}
+  .lvl-pill.lvl-5{background:var(--lvl-5)}
+
+  /* Priority band headers */
+  .band-header{padding:8px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:flex;justify-content:space-between;align-items:center}
+  .band-header.crit{background:var(--red-soft);color:var(--red-text);border-left:4px solid var(--red)}
+  .band-header.watch{background:var(--amber-soft);color:var(--amber-text);border-left:4px solid var(--amber)}
+  .band-header.new{background:var(--teal-soft);color:var(--green-text);border-left:4px solid var(--gw-green)}
+  .band-header .band-r{display:flex;gap:12px;align-items:center;font-size:11px}
+  .band-header .band-r .sub{font-weight:400;color:var(--slate);font-style:italic}
+  .band-header .band-r .cnt{background:white;border-radius:12px;padding:2px 10px;font-weight:700}
+
+  /* Aging bar */
+  .aging-row{display:grid;grid-template-columns:180px 60px 1fr;align-items:center;gap:8px;padding:5px 0;font-size:11px;border-bottom:1px solid #F0F0F0}
+  .aging-row:last-child{border-bottom:0}
+  .aging-row .lb{color:var(--navy);font-weight:600}
+  .aging-row .cnt{color:var(--navy);font-weight:700;text-align:right}
+  .aging-row .track{background:var(--slate-soft);height:12px;border-radius:2px;overflow:hidden;border:1px solid #DDE0E8}
+  .aging-row .fill{height:100%;display:block}
+  .aging-row .fill.ok{background:var(--gw-green)}
+  .aging-row .fill.watch{background:var(--amber)}
+  .aging-row .fill.crit{background:var(--red)}
+
+  /* Restricted note */
+  .restricted-note{background:var(--red-soft);border-left:4px solid var(--red);padding:8px 12px;font-size:10px;color:var(--navy);margin:8px 0;border-radius:0 3px 3px 0}
+  .restricted-note b{color:var(--red-text)}
+
+  .show-all{text-align:center;padding:12px 14px;background:#F7F9FB;font-size:12px;color:var(--gw-blue);cursor:pointer;font-weight:600;border-top:1px dashed #DDD;display:flex;justify-content:center;align-items:center;gap:8px}
+  .show-all .arrow{transition:transform 0.2s}
+
+  .footer{background:var(--navy);color:rgba(255,255,255,0.75);padding:12px 24px;font-size:10px;text-align:center;letter-spacing:1px}
+  .mockup-badge{position:fixed;top:12px;right:12px;background:var(--red);color:white;padding:6px 14px;font-size:10px;letter-spacing:2px;font-weight:700;border-radius:3px;z-index:999;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+
+  @media (max-width:1024px){
+    .frame{max-width:100%}
+    .body{padding:16px 20px}
+    .head,.filters,.read-strip,.footer{padding-left:20px;padding-right:20px}
+    .kpi-strip{grid-template-columns:repeat(3,1fr)}
+    .grid-2{grid-template-columns:1fr}
+    .aging-row{grid-template-columns:1fr 60px}
+    .aging-row .track{grid-column:1 / span 2}
+  }
+</style>
+</head>
+<body>
+<div class="mockup-badge">MOCKUP · TACTICAL</div>
+<div class="frame">
+
+  <div class="head">
+    <div class="row">
+      <h2>Guideway 1.0 &mdash; Tactical Dashboard</h2>
+      <span class="env">GOODWILL MARION &middot; MY WORK QUEUE</span>
+    </div>
+    <div class="sub">Guide view &middot; <b>What matters most today &middot; What is my next step?</b> &middot; Refreshed every 15 min</div>
+  </div>
+
+  <div class="filters">
+    <span class="filter"><b>Guide</b>Me (Sara T.)</span>
+    <span class="filter"><b>Program</b>All</span>
+    <span class="filter"><b>Location</b>Marion County</span>
+    <span class="filter"><b>Stage</b>All</span>
+    <span class="filter"><b>Language</b>All</span>
+    <span class="note">Report run: Sep 5, 2026 · 8:14 AM</span>
+  </div>
+
+  <div class="read-strip">
+    <span class="kicker">How to read this</span>
+    <span class="grp">
+      <span class="grp-lbl">Trigger events</span>
+      <span class="pill sla">enrollment</span>
+      <span class="pill sla">referral sent</span>
+      <span class="pill sla">missed appt</span>
+      <span class="pill sla">escalation</span>
+      <span class="pill sla">participant-initiated</span>
+    </span>
+    <span style="color:var(--slate);opacity:0.5;">&middot;</span>
+    <span class="grp">
+      <span class="grp-lbl">Aging bands</span>
+      <span class="pill" style="border-color:var(--gw-green);color:var(--green-text);">0–7d</span>
+      <span class="pill" style="border-color:var(--amber);color:var(--amber-text);">8–14d</span>
+      <span class="pill" style="border-color:var(--red);color:var(--red-text);">15+d</span>
+    </span>
+    <span class="refresh">
+      Data refreshed <b>8:14 AM &middot; Sep 5</b> &middot; <b>Template v2.0</b> &middot; <span style="color:var(--gw-green);font-weight:700;">&#10003; healthy</span>
+    </span>
+  </div>
+
+
+    <!-- WHERE YOU STAND · Me / Program / All Programs -->
+    <div style="margin:20px 24px 0 24px;background:white;border:1px solid #E0E4E8;border-radius:6px;padding:14px 16px;display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:24px;align-items:center;">
+      <div style="font-size:9px;letter-spacing:1.5px;color:var(--slate);font-weight:700;text-transform:uppercase;line-height:1.3;">Where<br>your caseload<br>stands</div>
+      <div style="text-align:center;padding:8px 0;border-right:1px solid #EEF0F3;">
+        <div style="font-size:9px;letter-spacing:1px;color:var(--slate);font-weight:700;text-transform:uppercase;margin-bottom:2px;">My caseload</div>
+        <div style="font-size:26px;color:var(--gw-blue);font-weight:700;line-height:1;">3.5</div>
+        <div style="font-size:10px;color:var(--green-text);font-weight:700;margin-top:4px;">+0.1 vs prior 30d</div>
+        <div style="font-size:9px;color:var(--slate);">n=47 participants</div>
+      </div>
+      <div style="text-align:center;padding:8px 0;border-right:1px solid #EEF0F3;">
+        <div style="font-size:9px;letter-spacing:1px;color:var(--slate);font-weight:700;text-transform:uppercase;margin-bottom:2px;">My program · CCMEP</div>
+        <div style="font-size:26px;color:var(--navy);font-weight:700;line-height:1;">3.4</div>
+        <div style="font-size:10px;color:var(--red-text);font-weight:700;margin-top:4px;">−0.2 vs prior 30d</div>
+        <div style="font-size:9px;color:var(--slate);">n=428 participants</div>
+      </div>
+      <div style="text-align:center;padding:8px 0;">
+        <div style="font-size:9px;letter-spacing:1px;color:var(--slate);font-weight:700;text-transform:uppercase;margin-bottom:2px;">All programs · Goodwill Marion</div>
+        <div style="font-size:26px;color:var(--navy);font-weight:700;line-height:1;">3.4</div>
+        <div style="font-size:10px;color:var(--red-text);font-weight:700;margin-top:4px;">−0.8 vs prior 30d</div>
+        <div style="font-size:9px;color:var(--slate);">n=1,847 participants</div>
+      </div>
+    </div>
+
+  <div class="body">
+
+    <!-- TOP KPI STRIP (6 cards) -->
+    <div class="kpi-strip">
+      <div class="kpi"><div class="lbl">My Active Caseload</div><div class="val">47</div></div>
+      <div class="kpi"><div class="lbl">Instances of Service · 30d</div><div class="val">184</div></div>
+      <div class="kpi"><div class="lbl">Contacted Within 24h · rate</div><div class="val">82%</div><div class="aging"><div class="lbl-row"><span>By trigger</span><span>36/44</span></div><div class="bar"><span class="b-ok" style="flex:36;"></span><span class="b-crit" style="flex:8;"></span></div></div></div>
+      <div class="kpi urgent"><div class="lbl">Overdue Touchbase</div><div class="val">9</div><div class="aging"><div class="lbl-row"><span>0–7d</span><span>8–14d</span><span>15+d</span></div><div class="bar"><span class="b-ok" style="flex:2;"></span><span class="b-watch" style="flex:4;"></span><span class="b-crit" style="flex:3;"></span></div></div></div>
+      <div class="kpi watch"><div class="lbl">Overdue Notes</div><div class="val">6</div><div class="aging"><div class="lbl-row"><span>0–3d</span><span>4–7d</span><span>8+d</span></div><div class="bar"><span class="b-ok" style="flex:3;"></span><span class="b-watch" style="flex:2;"></span><span class="b-crit" style="flex:1;"></span></div></div></div>
+      <div class="kpi urgent"><div class="lbl">Goals Overdue</div><div class="val">14</div><div class="aging"><div class="lbl-row"><span>0–7d</span><span>8–14d</span><span>15+d</span></div><div class="bar"><span class="b-ok" style="flex:4;"></span><span class="b-watch" style="flex:6;"></span><span class="b-crit" style="flex:4;"></span></div></div></div>
+      <div class="kpi watch"><div class="lbl">Referrals Pending Response</div><div class="val">11</div><div class="aging"><div class="lbl-row"><span>0–7d</span><span>8–14d</span><span>15+d</span></div><div class="bar"><span class="b-ok" style="flex:5;"></span><span class="b-watch" style="flex:4;"></span><span class="b-crit" style="flex:2;"></span></div></div></div>
+    </div>
+
+    <!-- AT-RISK BAND -->
+    <div class="risk-band">
+      <div class="big">7<small>AT-RISK</small></div>
+      <div>
+        <div class="title">⚠ Participants meeting one or more at-risk conditions</div>
+        <div class="subline">
+          Any of: <b>Critical in 3+ determinants</b> · <b>no contact 30+ days</b> · <b>2+ goals overdue</b> · <b>referral unresolved 14+ days</b> · <b>level decrease at last reassessment</b>. <i style="color:var(--slate);">Mental Health / Safety, Violence Prevention & Environmental Stability response content NOT surfaced here per Guardrail G6.</i>
+        </div>
+        <div class="items">
+          <span class="chip">Jamie R.<b>3 Critical</b><small>Marion · CCMEP</small></span>
+          <span class="chip">Terrance W.<b>34d no contact</b><small>Delaware · WIOA</small></span>
+          <span class="chip">Priscilla M.<b>Level ↓ · Housing</b><small>Morrow · CCMEP</small></span>
+          <span class="chip">Antonio L.<b>2 goals overdue 22d</b><small>Marion · SCSEP</small></span>
+          <span class="chip">Kayla D.<b>Referral 18d no response</b><small>Union · CCMEP</small></span>
+          <span class="chip">Marcus J.<b>3 Critical + level ↓</b><small>Marion · WIOA</small></span>
+          <span class="chip">Renée B.<b>31d no contact</b><small>Crawford · SNAP E&amp;T</small></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRACTION INTRO STRIP -->
+    <div style="background:var(--teal-soft);border-left:4px solid var(--gw-green);padding:10px 14px;font-size:11px;color:var(--navy);margin-bottom:16px;border-radius:0 3px 3px 0;line-height:1.5;">
+      <b>Traction, not just activity.</b> The queue below shows what needs your attention &mdash; but every row is also traceable back to a participant's <b>Guideway Scorecard</b>. When you close a task, the movement question follows: <i>did the person's life actually move forward?</i>
+    </div>
+
+    <!-- WEEKLY PRIORITIES -->
+    <div class="section">
+      <div class="section-head">WEEKLY PRIORITIES <span class="badge">27 SHOWN &middot; 41 OPEN</span></div>
+      <div class="block" style="padding:0;">
+
+        <div class="band-header crit">
+          <span>&#9679; Overdue &middot; past due date</span>
+          <div class="band-r"><span class="sub">all overdue always shown</span><span class="cnt">14</span></div>
+        </div>
+        <table>
+          <thead><tr><th>Participant</th><th>Type</th><th>Determinant / Program</th><th class="num-r">Days Overdue</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>Jamie R.</td><td>Touchbase</td><td>Marion · CCMEP</td><td class="num-r day-red">18</td><td>Call today · escalate to supervisor if no answer</td></tr>
+            <tr><td>Priscilla M.</td><td>Reassessment</td><td>Housing · CCMEP</td><td class="num-r day-red">15</td><td>Schedule in-person session</td></tr>
+            <tr><td>Antonio L.</td><td>Goal</td><td>Workforce Development · SCSEP</td><td class="num-r day-red">22</td><td>Break into smaller steps · re-anchor to interest</td></tr>
+            <tr><td>Kayla D.</td><td>Referral f/u</td><td>Housing · CCMEP</td><td class="num-r day-red">18</td><td>Contact partner site · confirm application status</td></tr>
+            <tr><td>Terrance W.</td><td>Touchbase</td><td>Delaware · WIOA</td><td class="num-r day-red">34</td><td>Warm-handoff to peer navigator recommended</td></tr>
+            <tr><td>Marcus J.</td><td>Note</td><td>Financial · WIOA</td><td class="num-r day-red">11</td><td>Document last conversation from journal</td></tr>
+            <tr><td>Sylvia H.</td><td>Goal</td><td>Nutrition · Non-federal</td><td class="num-r day-red">9</td><td>Reset target date · adjust step complexity</td></tr>
+          </tbody>
+        </table>
+
+        <div class="band-header watch">
+          <span>&#9679; Due this week &middot; next 7 days</span>
+          <div class="band-r"><span class="sub">top 5 shown of 8</span><span class="cnt">8</span></div>
+        </div>
+        <table>
+          <thead><tr><th>Participant</th><th>Type</th><th>Determinant / Program</th><th class="num-r">Due In</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>Daniela V.</td><td>Reassessment</td><td>Communication · WIOA</td><td class="num-r day-amber">2d</td><td>Confirm scheduled slot</td></tr>
+            <tr><td>Ashton P.</td><td>Touchbase</td><td>Marion · CCMEP</td><td class="num-r day-amber">3d</td><td>Send calendar invite</td></tr>
+            <tr><td>Renée B.</td><td>Referral f/u</td><td>Health Care Access & Quality · SNAP E&amp;T</td><td class="num-r day-amber">4d</td><td>Check-in on scheduled appointment</td></tr>
+            <tr><td>Cordell G.</td><td>Goal</td><td>Transportation · OOD</td><td class="num-r day-amber">5d</td><td>Verify transit-card issuance</td></tr>
+            <tr><td>Mahalia W.</td><td>Touchbase</td><td>Morrow · CCMEP</td><td class="num-r day-amber">6d</td><td>Standing weekly call</td></tr>
+          </tbody>
+        </table>
+
+        <div class="band-header new">
+          <span>&#9679; New &middot; opened this week</span>
+          <div class="band-r"><span class="sub">top 5 shown of 5</span><span class="cnt">5</span></div>
+        </div>
+        <table>
+          <thead><tr><th>Participant</th><th>Type</th><th>Determinant / Program</th><th class="num-r">Opened</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>Malik S.</td><td>Enrollment</td><td>CCMEP</td><td class="num-r day-green">Mon</td><td>Initial assessment scheduled Fri</td></tr>
+            <tr><td>Jenae R.</td><td>Enrollment</td><td>WIOA</td><td class="num-r day-green">Tue</td><td>Doc collection in progress</td></tr>
+            <tr><td>Otis C.</td><td>Referral in</td><td>Housing</td><td class="num-r day-green">Wed</td><td>Warm-handoff meeting Thu</td></tr>
+            <tr><td>Yesenia B.</td><td>Enrollment</td><td>SNAP E&amp;T</td><td class="num-r day-green">Wed</td><td>Eligibility screen pending</td></tr>
+            <tr><td>Devonte H.</td><td>Enrollment</td><td>Non-federal</td><td class="num-r day-green">Thu</td><td>First contact today</td></tr>
+          </tbody>
+        </table>
+
+        <div class="show-all">Show all queued (14 more) <span class="arrow">&rarr;</span></div>
+
+        <div style="padding:10px 14px;font-size:10px;color:var(--slate);background:white;border-top:1px solid #EEF0F3;">
+          <b>Banding rule:</b> Overdue = past due date (all shown). Due this week = next 7 days (top 5). New = opened in current week (top 5). Auto-banding scales to caseloads up to ~100 &mdash; beyond that, secondary Guides can be added and filtered by ownership.
+        </div>
+      </div>
+    </div>
+
+    <!-- UPCOMING TOUCHBASE + GOAL AGING (2-col) -->
+    <div class="section">
+      <div class="grid-2">
+
+        <div>
+          <div class="section-head">UPCOMING TOUCHBASE <span class="badge">NEXT 30 DAYS</span></div>
+          <div class="block">
+            <div class="aging-row"><span class="lb">Next 7 days</span><span class="cnt">11</span><span class="track"><span class="fill ok" style="width:26%;"></span></span></div>
+            <div class="aging-row"><span class="lb">Next 8–14 days</span><span class="cnt">18</span><span class="track"><span class="fill ok" style="width:42%;"></span></span></div>
+            <div class="aging-row"><span class="lb">Next 15–30 days</span><span class="cnt">14</span><span class="track"><span class="fill ok" style="width:32%;"></span></span></div>
+            <div style="font-size:10px;color:var(--slate);margin-top:10px;font-style:italic;">Scheduled touchbase events from participant service plans. Reschedule from row &rarr; opens the calendar drawer.</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-head">GOAL AGING <span class="badge">14 OVERDUE &middot; ACROSS MY CASELOAD</span></div>
+          <div class="block">
+            <div class="aging-row"><span class="lb">0–7 days overdue</span><span class="cnt">4</span><span class="track"><span class="fill ok" style="width:29%;"></span></span></div>
+            <div class="aging-row"><span class="lb">8–14 days overdue</span><span class="cnt">6</span><span class="track"><span class="fill watch" style="width:43%;"></span></span></div>
+            <div class="aging-row"><span class="lb">15–30 days overdue</span><span class="cnt">3</span><span class="track"><span class="fill crit" style="width:21%;"></span></span></div>
+            <div class="aging-row"><span class="lb">30+ days overdue</span><span class="cnt">1</span><span class="track"><span class="fill crit" style="width:7%;"></span></span></div>
+            <div style="font-size:10px;color:var(--slate);margin-top:10px;font-style:italic;">30+ overdue triggers a supervisor alert. Goal design review (badly scoped goal? missing local resource?) before re-setting the date.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- REFERRAL AGING + REASSESSMENT DUE (2-col) -->
+    <div class="section">
+      <div class="grid-2">
+
+        <div>
+          <div class="section-head">REFERRAL AGING <span class="badge">11 PENDING · UNABLE-TO-ACCESS REASON BROKEN OUT</span></div>
+          <div class="block" style="padding:0;">
+            <table>
+              <thead><tr><th>Stage</th><th class="num-r">Pending</th><th class="num-r">Unable to access</th><th>Top reason</th></tr></thead>
+              <tbody>
+                <tr><td>Stabilize</td><td class="num-r day-amber">3</td><td class="num-r day-red">1</td><td style="font-size:11px;">Resource capacity &mdash; wait list &gt; 6 wks</td></tr>
+                <tr><td>Connect</td><td class="num-r day-amber">4</td><td class="num-r day-red">2</td><td style="font-size:11px;">Eligibility mismatch &mdash; ID/documentation</td></tr>
+                <tr><td>Build Skills</td><td class="num-r day-amber">3</td><td class="num-r day-red">1</td><td style="font-size:11px;">Course session frequency (weekly &rarr; monthly)</td></tr>
+                <tr><td>Maintain</td><td class="num-r day-amber">1</td><td class="num-r day-green">0</td><td style="font-size:11px;">&mdash;</td></tr>
+              </tbody>
+            </table>
+            <div style="padding:10px 14px;font-size:10px;color:var(--slate);font-style:italic;background:white;border-top:1px solid #EEF0F3;">
+              <b>Guardrail G8.</b> "Unable to access" always requires a reason code, always shown. Closed-loop referral research consistently finds attrition driven by resource capacity, not participant follow-through. Without the reason, the data reads as participants failing &mdash; usually wrong.
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-head">REASSESSMENT DUE <span class="badge">PAST RECALL INTERVAL &middot; BY DETERMINANT</span></div>
+          <div class="block" style="padding:0;">
+            <table>
+              <thead><tr><th>Determinant</th><th class="num-r">Due</th><th class="num-r">Past interval</th><th>Recall window</th></tr></thead>
+              <tbody>
+                <tr><td>Housing</td><td class="num-r">7</td><td class="num-r day-amber">4</td><td style="font-size:11px;">90 days</td></tr>
+                <tr><td>Financial Stability</td><td class="num-r">5</td><td class="num-r day-red">3</td><td style="font-size:11px;">90 days</td></tr>
+                <tr><td>Workforce Development</td><td class="num-r">6</td><td class="num-r day-amber">2</td><td style="font-size:11px;">60 days</td></tr>
+                <tr><td>Health Care Access & Quality</td><td class="num-r">3</td><td class="num-r day-green">0</td><td style="font-size:11px;">180 days</td></tr>
+                <tr><td>Transportation</td><td class="num-r">4</td><td class="num-r day-amber">1</td><td style="font-size:11px;">90 days</td></tr>
+                <tr><td>Others (13 more)</td><td class="num-r">21</td><td class="num-r day-amber">6</td><td style="font-size:11px;color:var(--slate);"><i>13 of 14 lack stated recall window &mdash; using 90d default per Guardrail G4</i></td></tr>
+              </tbody>
+            </table>
+            <div style="padding:10px 14px;font-size:10px;color:var(--slate);font-style:italic;background:white;border-top:1px solid #EEF0F3;">
+              <b>Note.</b> Only 1 of 14 determinants has a stated recall interval. Product decision pending. Until then, dashboard defaults to 90 days and flags the assumption.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GUIDE ACTIVITY + CASELOAD COMPOSITION (2-col) -->
+    <div class="section">
+      <div class="grid-2">
+
+        <div>
+          <div class="section-head">GUIDE ACTIVITY &middot; LAST 30 DAYS <span class="badge">ACTIVITY METRICS ONLY · WORKFLOW FACTS</span></div>
+          <div class="block" style="padding:0;">
+            <table>
+              <thead><tr><th>Guide</th><th class="num-r">Caseload</th><th class="num-r">Touchbase</th><th class="num-r">Notes</th><th class="num-r">24h Rate</th></tr></thead>
+              <tbody>
+                <tr><td><b>Sara T. (me)</b></td><td class="num-r">47</td><td class="num-r">128</td><td class="num-r">121</td><td class="num-r day-green">82%</td></tr>
+                <tr><td>Marcus L.</td><td class="num-r">52</td><td class="num-r">141</td><td class="num-r">138</td><td class="num-r day-green">88%</td></tr>
+                <tr><td>Denise R.</td><td class="num-r">41</td><td class="num-r">112</td><td class="num-r">108</td><td class="num-r day-green">79%</td></tr>
+                <tr><td>Jamal W.</td><td class="num-r">58</td><td class="num-r">98</td><td class="num-r">89</td><td class="num-r day-amber">71%</td></tr>
+                <tr><td>Priya K.</td><td class="num-r">44</td><td class="num-r">124</td><td class="num-r">119</td><td class="num-r day-green">84%</td></tr>
+                <tr><td>Elena M.</td><td class="num-r">39</td><td class="num-r">108</td><td class="num-r">104</td><td class="num-r day-green">86%</td></tr>
+              </tbody>
+            </table>
+            <div class="restricted-note">
+              <b>Guardrail G5.</b> Activity metrics only. Outcome metrics (level movement, graduation, stability score) are aggregate-only and NOT visible on Guide-level rows. Guide-level outcome comparison, when needed, must display Caseload Composition (right) alongside &mdash; ranking Guides on outcomes without composition penalizes anyone assigned harder cases.
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-head">CASELOAD COMPOSITION &middot; LEVEL MIX PER GUIDE <span class="badge">SHOWN WHEN COMPARING GUIDES</span></div>
+          <div class="block" style="padding:0;">
+            <table>
+              <thead><tr><th>Guide</th><th class="num-r"><span class="lvl-pill lvl-1">1</span></th><th class="num-r"><span class="lvl-pill lvl-2">2</span></th><th class="num-r"><span class="lvl-pill lvl-3">3</span></th><th class="num-r"><span class="lvl-pill lvl-4">4</span></th><th class="num-r"><span class="lvl-pill lvl-5">5</span></th></tr></thead>
+              <tbody>
+                <tr><td><b>Sara T. (me)</b></td><td class="num-r">8</td><td class="num-r">14</td><td class="num-r">15</td><td class="num-r">7</td><td class="num-r">3</td></tr>
+                <tr><td>Marcus L.</td><td class="num-r">12</td><td class="num-r">18</td><td class="num-r">14</td><td class="num-r">6</td><td class="num-r">2</td></tr>
+                <tr><td>Denise R.</td><td class="num-r">3</td><td class="num-r">9</td><td class="num-r">15</td><td class="num-r">10</td><td class="num-r">4</td></tr>
+                <tr><td>Jamal W.</td><td class="num-r">18</td><td class="num-r">21</td><td class="num-r">12</td><td class="num-r">5</td><td class="num-r">2</td></tr>
+                <tr><td>Priya K.</td><td class="num-r">6</td><td class="num-r">11</td><td class="num-r">16</td><td class="num-r">8</td><td class="num-r">3</td></tr>
+                <tr><td>Elena M.</td><td class="num-r">4</td><td class="num-r">8</td><td class="num-r">14</td><td class="num-r">9</td><td class="num-r">4</td></tr>
+              </tbody>
+            </table>
+            <div style="padding:10px 14px;font-size:10px;color:var(--slate);font-style:italic;background:white;border-top:1px solid #EEF0F3;">
+              Levels rendered monochrome blue-to-green &mdash; not a good/bad scale. Jamal's higher share of Level 1–2 participants explains a portion of his lower 24h rate. Assign that context, not blame.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">GUIDEWAY 1.0 &middot; GOODWILL MARION &middot; TACTICAL DASHBOARD &middot; MOCKUP for review</div>
+</div>
+</body>
+</html>

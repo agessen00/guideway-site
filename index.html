@@ -127,6 +127,32 @@ nav a{color:var(--slate-text); text-decoration:none; font-size:13px; font-weight
 nav a:hover{color:var(--gw-blue)}
 header .btn{flex:none; white-space:nowrap}
 
+/* ---- dropdown menus: five top-level items, sub-lists on hover, focus or tap ---- */
+nav ul li{position:relative}
+nav button{
+  font:inherit; font-size:13px; font-weight:600; color:var(--slate-text); background:none; border:0;
+  padding:6px 0; cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:5px;
+}
+nav button::after{content:""; width:6px; height:6px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(45deg) translateY(-2px); transition:transform .15s ease}
+nav button:hover,nav .has-sub.open>button,nav .has-sub:focus-within>button{color:var(--gw-blue)}
+nav .has-sub.open>button::after{transform:rotate(225deg) translateY(-1px)}
+nav .sub{
+  display:none; position:absolute; top:calc(100% + 8px); left:-12px; min-width:230px; z-index:30;
+  background:var(--surface); border:1px solid var(--line); border-radius:6px; box-shadow:0 10px 30px rgba(18,40,76,.12);
+  padding:8px 0; margin:0; list-style:none; flex-direction:column; gap:0;
+}
+nav .sub::before{content:""; position:absolute; left:0; right:0; top:-9px; height:9px} /* keeps hover alive across the gap */
+nav .has-sub:hover>.sub,nav .has-sub:focus-within>.sub,nav .has-sub.open>.sub{display:flex}
+nav .sub a{display:block; padding:8px 16px; font-weight:500; color:var(--gw-navy)}
+nav .sub a:hover{background:var(--navy-soft); color:var(--gw-blue)}
+nav .sub .sub-note{padding:6px 16px 2px; font-size:11px; color:var(--slate); border-top:1px solid var(--line); margin-top:6px}
+@media(max-width:1024px){
+  nav .sub{position:static; box-shadow:none; border:0; border-left:2px solid var(--line); border-radius:0; min-width:0; padding:4px 0 4px 4px; margin:4px 0 6px}
+  nav .sub::before{display:none}
+  nav .has-sub:hover>.sub{display:none}
+  nav .has-sub.open>.sub,nav .has-sub:focus-within>.sub{display:flex}
+}
+
 /* ---- buttons ---- */
 .btn{
   display:inline-block; font:inherit; font-size:14px; font-weight:600;
@@ -490,15 +516,46 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
     <div class="logo">GUIDEWAY</div>
     <nav aria-label="Main">
       <ul>
-        <li><a href="#ask">The problem</a></li>
-        <li><a href="#how">How it works</a></li>
-        <li><a href="#framework">The framework</a></li>
-        <li><a href="#value">What changes</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#traction">Traction</a></li>
-        <li><a href="#who">Who it's for</a></li>
-        <li><a href="#reading">What we read</a></li>
-        <li><a href="#status">Where we are</a></li>
+        <li class="has-sub">
+          <button type="button" aria-expanded="false" aria-controls="m-why">Why Guideway</button>
+          <ul class="sub" id="m-why">
+            <li><a href="#ask">The problem</a></li>
+            <li><a href="#how">How it works</a></li>
+            <li><a href="#value">What changes on Monday</a></li>
+          </ul>
+        </li>
+        <li class="has-sub">
+          <button type="button" aria-expanded="false" aria-controls="m-framework">The framework</button>
+          <ul class="sub" id="m-framework">
+            <li><a href="#framework">Fourteen areas, five levels</a></li>
+            <li><a href="#next">The next step</a></li>
+            <li><a href="#guide">The Guide</a></li>
+            <li><a href="#person">Your own view</a></li>
+          </ul>
+        </li>
+        <li class="has-sub">
+          <button type="button" aria-expanded="false" aria-controls="m-product">Product</button>
+          <ul class="sub" id="m-product">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#traction">Traction</a></li>
+            <li><a href="#who">Who it's for</a></li>
+          </ul>
+        </li>
+        <li class="has-sub">
+          <button type="button" aria-expanded="false" aria-controls="m-dash">Dashboards</button>
+          <ul class="sub" id="m-dash">
+            <li><a href="dashboards/operational.html" target="_blank" rel="noopener">Operational — leadership view</a></li>
+            <li><a href="dashboards/tactical.html" target="_blank" rel="noopener">Tactical — the Guide's day</a></li>
+            <li class="sub-note">Mockups with illustrative data</li>
+          </ul>
+        </li>
+        <li class="has-sub">
+          <button type="button" aria-expanded="false" aria-controls="m-about">About</button>
+          <ul class="sub" id="m-about">
+            <li><a href="#reading">What we read</a></li>
+            <li><a href="#status">Where we are today</a></li>
+          </ul>
+        </li>
       </ul>
     </nav>
     <a class="btn" href="#demo">Request a demo</a>
@@ -1043,6 +1100,17 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
 </footer>
 
 <script>
+/* Header dropdowns: tap/click toggles, Escape closes, clicking elsewhere closes. */
+const menus=[...document.querySelectorAll('nav .has-sub')];
+function closeMenus(except){menus.forEach(m=>{if(m!==except){m.classList.remove('open');m.querySelector('button').setAttribute('aria-expanded','false');}});}
+menus.forEach(m=>{
+  const b=m.querySelector('button');
+  b.addEventListener('click',e=>{e.stopPropagation();const open=!m.classList.contains('open');closeMenus(m);m.classList.toggle('open',open);b.setAttribute('aria-expanded',String(open));});
+  m.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>closeMenus()));
+});
+document.addEventListener('click',()=>closeMenus());
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenus();});
+
 const LEVELS = ["Critical","Vulnerable","Dependent","Independent","Thriving"];
 
 /* All fourteen areas are named. Only the two samples carry their question and ladder —
