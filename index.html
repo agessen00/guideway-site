@@ -56,6 +56,9 @@
   --ink:#222222;
 
   --amber-soft:#FDF3E3;
+  /* Downward movement for a person: pink, never red. Visible without reading
+     as a failing grade. --pink-text is the AA-safe variant for labels. */
+  --pink:#E27BA8; --pink-soft:#FBE4EE; --pink-text:#A8336B;
   /* Warm neutral for the honest-status rows. Not in the brand spec: the
      palette is entirely cool, so slate-soft rows sat at 1.01:1 against the
      page ground and read as one flat block. Warm, deliberately not amber —
@@ -233,7 +236,7 @@ section{padding:80px 0}
 }
 .pull figcaption{font-size:13px; color:var(--slate-text); margin-top:10px; padding-left:19px}
 
-/* ---- pills: fifteen areas ---- */
+/* ---- pills: fourteen areas ---- */
 /* align-items:flex-start stops a wrapped pill from stretching its whole
    row; nowrap keeps the long area names on one line so every pill is the
    same height. */
@@ -388,6 +391,11 @@ section{padding:80px 0}
    down as visible as every up (G7). */
 .score .mv{color:var(--gw-navy); font-weight:600}
 .score .mv .ar{display:inline-block; width:1.1em; font-weight:700}
+.score .mv.down{color:var(--pink-text)}
+.states li.down{background:var(--pink-soft)}
+.states li.down .ar,.states li.down strong{color:var(--pink-text)}
+.tile em i.down{color:var(--pink-text)}
+.cmp td .down{color:var(--pink-text)}
 
 .states{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px}
 .states li{
@@ -504,9 +512,9 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
   <div class="wrap">
     <div class="hero-grid">
       <div class="stack">
-        <p class="kicker">Whole-person assessment and case management for human services</p>
+        <p class="kicker">Life navigation and progress platform for human services</p>
         <h1>Everyone has a way. Not everyone has a <em>guide</em>.</h1>
-        <p class="lede">Guideway is case management built around the person, not the program. One conversation covers fifteen areas of life, the person places themselves on each, and the next small step is already written — so a Guide spends the hour on the person, not the paperwork.</p>
+        <p class="lede">Guideway is not another case-management system. It helps a person and their Guide see where they are, what matters most, what is in the way and what to do next — and whether life actually moved. Case management runs underneath. The person runs the journey.</p>
         <div class="hero-cta">
           <a class="btn" href="#demo">Request a demo</a>
           <a class="btn btn-secondary" href="#how">See how it works</a>
@@ -521,7 +529,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
       <div class="mock" role="img" aria-label="Concept preview of one participant's view: three areas of life with their current level, and the next written step. Illustrative only.">
         <div class="mock-bar"><i></i><i></i><i></i><span>Concept preview</span></div>
         <div class="mock-body">
-          <div class="mock-head"><strong>One person, fifteen areas</strong><span>Reassessed 12 days ago</span></div>
+          <div class="mock-head"><strong>One person, fourteen areas</strong><span>Reassessed 12 days ago</span></div>
           <div class="mock-rows">
             <div class="mock-row" style="--lv:var(--lvl-2); --lv-text:var(--lvl-2-text)"><b>Housing</b><em>Vulnerable</em></div>
             <div class="mock-row" style="--lv:var(--lvl-3); --lv-text:var(--lvl-3-text)"><b>Transportation</b><em>Dependent</em></div>
@@ -537,7 +545,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
     </div>
 
     <div class="pillars">
-      <a href="#framework"><span class="num">01</span><span><b>Meet the person</b><span>One conversation, fifteen areas of life, a level the person chooses.</span></span></a>
+      <a href="#framework"><span class="num">01</span><span><b>Meet the person</b><span>One conversation, fourteen areas of life, a level the person chooses.</span></span></a>
       <a href="#next"><span class="num">02</span><span><b>Take the next small step</b><span>The way forward is already written, with a timeframe on every step.</span></span></a>
       <a href="#guide"><span class="num">03</span><span><b>Walk the path together</b><span>A Guide holds the map, not the wheel — and the record follows the person.</span></span></a>
     </div>
@@ -570,7 +578,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
       <p class="lede">Three moves. The three sections that follow are why each one is shaped the way it is.</p>
     </div>
     <div class="grid grid-3" style="margin-top:32px">
-      <div class="card"><span class="n">Step 01 · <a href="#framework" style="color:inherit">The framework</a></span><h3>Meet the person</h3><p>One conversation, not four intakes. The person describes their own situation, once, in their own words — across fifteen areas of life, on a five-level ladder they place themselves on.</p></div>
+      <div class="card"><span class="n">Step 01 · <a href="#framework" style="color:inherit">The framework</a></span><h3>Meet the person</h3><p>One conversation, not four intakes. The person describes their own situation, once, in their own words — across fourteen areas of life, on a five-level ladder they place themselves on.</p></div>
       <div class="card"><span class="n">Step 02 · <a href="#next" style="color:inherit">The next step</a></span><h3>Take the next small step</h3><p>Place yourself on a level and the way forward is already written: what the next level looks like, three steps to reach it, three actions under each, every one timed.</p></div>
       <div class="card"><span class="n">Step 03 · <a href="#guide" style="color:inherit">The Guide</a></span><h3>Walk the path together</h3><p>A Guide holds the map, not the wheel. The relationship is what makes the plan usable — and the record follows the person, so a handoff is not a restart.</p></div>
     </div>
@@ -591,7 +599,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
     </figure>
 
     <div style="margin-top:48px">
-      <p class="kicker" style="margin-bottom:16px">The fifteen areas</p>
+      <p class="kicker" style="margin-bottom:16px">The fourteen areas</p>
       <ul class="areas" id="areas"></ul>
     </div>
 
@@ -614,7 +622,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
         <p>Not <i>what's wrong with you</i> — <i>what happened to you</i>. A level describes a situation, never a person. Someone at Level 1 in housing is in a hard situation. They are not a Level 1. Dignity is a need, not a nicety.</p>
       </div>
       <div class="sub">
-        <h3>Fifteen areas, not one number</h3>
+        <h3>Fourteen areas, not one number</h3>
         <p>A single score tells a Guide nothing about Monday. Mobility research finds that neighborhood, network and early exposure shape a life more than any one intervention — so a plan starts where the person says the weight sits, in the area they name.</p>
       </div>
     </div>
@@ -628,7 +636,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
         <div class="card stage" style="--stage-color:var(--teal)"><span class="ord">Stage 03</span><h3>Build Skills</h3><p>Courses, education, coaching. Where measurable progress happens.</p></div>
         <div class="card stage" style="--stage-color:var(--gw-green)"><span class="ord">Stage 04</span><h3>Maintain</h3><p>Sustaining supports. What a person keeps after active service ends.</p></div>
       </div>
-      <p class="body" style="margin-top:16px; font-size:14px">The stages follow the order Maslow gave human needs. Guideway borrows the order, not the prerequisite — all fifteen areas are assessed together, so someone can be building skills in one while stabilizing in another.</p>
+      <p class="body" style="margin-top:16px; font-size:14px">The stages follow the order Maslow gave human needs. Guideway borrows the order, not the prerequisite — all fourteen areas are assessed together, so someone can be building skills in one while stabilizing in another.</p>
     </div>
   </div>
 </section>
@@ -690,7 +698,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
     </div>
 
     <div class="qs" style="margin-top:32px">
-      <div><b>Where am I now?</b><span>Fifteen areas, each on a level you chose yourself. What is stable and what needs attention, side by side.</span></div>
+      <div><b>Where am I now?</b><span>Fourteen areas, each on a level you chose yourself. What is stable and what needs attention, side by side.</span></div>
       <div><b>What matters most?</b><span>You name the area that carries the weight this season. The plan starts there, not where a form says.</span></div>
       <div><b>What is getting in my way?</b><span>The barrier in that area, in your words — and the resource or referral that answers it.</span></div>
       <div><b>What is my next step?</b><span>Already written: the next level, three steps to reach it, the first action with a date.</span></div>
@@ -704,11 +712,11 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
           <div class="tile" style="--lv:var(--lvl-4); --lv-text:var(--lvl-4-text)"><b>Housing</b><em>Independent<i aria-hidden="true">&#8593;</i></em></div>
           <div class="tile" style="--lv:var(--lvl-5); --lv-text:var(--lvl-5-text)"><b>Nutrition</b><em>Thriving<i aria-hidden="true">&#8593;</i></em></div>
           <div class="tile" style="--lv:var(--lvl-2); --lv-text:var(--lvl-2-text)"><b>Transportation</b><em>Vulnerable<i aria-hidden="true">&#8594;</i></em></div>
-          <div class="tile" style="--lv:var(--lvl-3); --lv-text:var(--lvl-3-text)"><b>Workforce</b><em>Dependent<i aria-hidden="true">&#8593;</i></em></div>
-          <div class="tile" style="--lv:var(--lvl-2); --lv-text:var(--lvl-2-text)"><b>Financial Stability</b><em>Vulnerable<i aria-hidden="true">&#8595;</i></em></div>
+          <div class="tile" style="--lv:var(--lvl-3); --lv-text:var(--lvl-3-text)"><b>Workforce Development</b><em>Dependent<i aria-hidden="true">&#8593;</i></em></div>
+          <div class="tile" style="--lv:var(--lvl-2); --lv-text:var(--lvl-2-text)"><b>Financial Stability</b><em>Vulnerable<i class="down" aria-hidden="true">&#8595;</i></em></div>
           <div class="tile" style="--lv:var(--lvl-4); --lv-text:var(--lvl-4-text)"><b>Social Connection</b><em>Independent<i aria-hidden="true">&#8594;</i></em></div>
         </div>
-        <p class="body" style="margin-top:12px; font-size:13px">Levels run blue to green, never red to green. The arrow says which way an area moved since the last conversation; a down arrow opens the next step, it does not mark a failure.</p>
+        <p class="body" style="margin-top:12px; font-size:13px">Levels run blue to green, never red to green. The arrow says which way an area moved since the last conversation; a down arrow is pink, never red — it opens the next step, it does not mark a failure.</p>
       </div>
       <div>
         <div class="concept"><p class="kicker">Did I move forward · timeline</p><span class="st planned">Planned · concept</span></div>
@@ -777,7 +785,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
       <tr><th scope="row">Activity reporting<small>Enrollments, contacts, services, referrals</small></th><td><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> Standard</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st built">Built</span></span></td></tr>
       <tr><th scope="row">Roles and single sign-on<small>Case Manager, Administrator, Enterprise Administrator; Microsoft Entra ID</small></th><td><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> Standard</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st built">Built</span></span></td></tr>
       <tr class="grp"><th scope="row" colspan="3">Understand the person</th></tr>
-      <tr><th scope="row">One assessment across fifteen areas of life<small>One question per area, five ordered answers, plain language</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">Not typical.</span> One intake per program, repeated</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
+      <tr><th scope="row">One assessment across fourteen areas of life<small>One question per area, five ordered answers, plain language</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">Not typical.</span> One intake per program, repeated</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
       <tr><th scope="row">Five-level placement chosen by the person<small>Critical to Thriving, one area at a time. Nobody is given a number</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">Not typical.</span> Staff-scored, or not assessed</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
       <tr><th scope="row">Reassessment that never overwrites the last answer<small>A new assessment each time; the history survives a reworded question</small></th><td><span class="cell"><span class="g part" aria-hidden="true">&#9681;</span><span class="visually-hidden">Partly.</span> Edits the existing record</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
       <tr><th scope="row">Protected areas stay protected<small>Mental health and safety responses are never shown in detail, only as counts</small></th><td><span class="cell"><span class="g part" aria-hidden="true">&#9681;</span><span class="visually-hidden">Partly.</span> Depends on configuration</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
@@ -793,7 +801,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
       <tr><th scope="row">Reassessment due, by area<small>Each area has its own recall window; the queue says when a conversation is due</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">Not typical.</span> Calendar reminders</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
       <tr><th scope="row">Your own caseload next to the program<small>Where your people stand against the program and the organization — always shown with the mix of people you carry</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">Not typical.</span> </span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
       <tr class="grp"><th scope="row" colspan="3">For the participant</th></tr>
-      <tr><th scope="row">Their own scorecard<small>Fifteen areas, where they were, where they are now, what moved — legible in seconds</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">Not typical.</span> The record belongs to the file</span></td><td class="gw"><span class="cell"><span class="g plan" aria-hidden="true">&#9675;</span><span class="visually-hidden">Planned.</span> <span class="st planned">Planned</span></span></td></tr>
+      <tr><th scope="row">Their own scorecard<small>Fourteen areas, where they were, where they are now, what moved — legible in seconds</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">Not typical.</span> The record belongs to the file</span></td><td class="gw"><span class="cell"><span class="g plan" aria-hidden="true">&#9675;</span><span class="visually-hidden">Planned.</span> <span class="st planned">Planned</span></span></td></tr>
       <tr><th scope="row">Strengths and accomplishments, not only needs<small>What is stable and what has been achieved sits beside what needs attention</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">Not typical.</span> </span></td><td class="gw"><span class="cell"><span class="g plan" aria-hidden="true">&#9675;</span><span class="visually-hidden">Planned.</span> <span class="st planned">Planned</span></span></td></tr>
       <tr><th scope="row">Goals and next steps in their own words<small>The plan is theirs to see, carry and change</small></th><td><span class="cell"><span class="g part" aria-hidden="true">&#9681;</span><span class="visually-hidden">Partly.</span> On paper, if printed</span></td><td class="gw"><span class="cell"><span class="g plan" aria-hidden="true">&#9675;</span><span class="visually-hidden">Planned.</span> <span class="st planned">Planned</span></span></td></tr>
       <tr><th scope="row">A journey that outlasts one program<small>Progress, goals and achievements that stay with the person as they move between programs and partners</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">Not typical.</span> Closed with the file</span></td><td class="gw"><span class="cell"><span class="g plan" aria-hidden="true">&#9675;</span><span class="visually-hidden">Planned.</span> <span class="st planned">Planned</span></span></td></tr>
@@ -805,7 +813,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
       <tr><th scope="row">In-program leading indicators<small>Credential attainment, measurable skill gain, graduation with both denominators — months before federal measures arrive</small></th><td><span class="cell"><span class="g part" aria-hidden="true">&#9681;</span><span class="visually-hidden">Partly.</span> Post-exit federal measures</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
       <tr><th scope="row">Program, location and equity breakdowns<small>By program, site, language and disability status; small groups suppressed to protect identity</small></th><td><span class="cell"><span class="g part" aria-hidden="true">&#9681;</span><span class="visually-hidden">Partly.</span> Program reports</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
       <tr><th scope="row">Guide activity shown with caseload mix<small>Touchbases and notes per Guide, always beside the levels they carry — nobody is ranked on outcomes alone</small></th><td><span class="cell"><span class="g part" aria-hidden="true">&#9681;</span><span class="visually-hidden">Partly.</span> Activity counts, no context</span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
-      <tr><th scope="row">Community patterns<small>“Transportation is the largest unresolved barrier at these three locations” — answerable from the same fifteen areas</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">Not typical.</span> </span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
+      <tr><th scope="row">Community patterns<small>“Transportation is the largest unresolved barrier at these three locations” — answerable from the same fourteen areas</small></th><td><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">Not typical.</span> </span></td><td class="gw"><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> <span class="st designed">Designed</span></span></td></tr>
       <tr class="grp"><th scope="row" colspan="3">Left to the systems you already run</th></tr>
       <tr><th scope="row">Billing, claims and invoicing<small>Guideway does not bill and will not pretend to</small></th><td><span class="cell"><span class="g yes" aria-hidden="true">&#10003;</span><span class="visually-hidden">Yes.</span> Standard</span></td><td class="gw"><span class="cell"><span class="g no" aria-hidden="true">&#8212;</span><span class="visually-hidden">No.</span> <span class="st out">Not in scope</span></span></td></tr>
         </tbody>
@@ -836,7 +844,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
 
     <div style="margin-top:48px">
       <p class="kicker" style="margin-bottom:8px">The participant scorecard</p>
-      <p class="body" style="margin-bottom:16px; font-size:14px">Fifteen areas, where someone was, where they are now, and what moved. Legible in seconds instead of six months of notes.</p>
+      <p class="body" style="margin-bottom:16px; font-size:14px">Fourteen areas, where someone was, where they are now, and what moved. Legible in seconds instead of six months of notes.</p>
       <p class="sample"><strong>Illustrative sample.</strong> Invented figures for one imagined person. Guideway holds no participant data and has produced no results — see <a href="#status">where we are today</a>.</p>
       <div class="scroll-x">
         <table class="score">
@@ -850,7 +858,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
             <tr><th scope="row">Workforce Development</th><td>Dependent</td><td>Independent</td><td class="mv"><span class="ar" aria-hidden="true">&#8593;</span>Up 1 level</td></tr>
             <tr><th scope="row">Nutrition</th><td>Independent</td><td>Thriving</td><td class="mv"><span class="ar" aria-hidden="true">&#8593;</span>Up 1 level</td></tr>
             <tr><th scope="row">Financial Stability</th><td>Vulnerable</td><td>Vulnerable</td><td class="mv"><span class="ar" aria-hidden="true">&#8594;</span>No change</td></tr>
-            <tr><th scope="row">Mental Health</th><td>Independent</td><td>Dependent</td><td class="mv"><span class="ar" aria-hidden="true">&#8595;</span>Down 1 level</td></tr>
+            <tr><th scope="row">Mental Health</th><td>Independent</td><td>Dependent</td><td class="mv down"><span class="ar" aria-hidden="true">&#8595;</span>Down 1 level</td></tr>
             <tr><th scope="row">Family Care</th><td>Critical</td><td>Critical</td><td class="mv"><span class="ar" aria-hidden="true">&#9888;</span>Stalled — 2 goals overdue</td></tr>
           </tbody>
         </table>
@@ -866,15 +874,15 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
         <li><span class="ar" aria-hidden="true">&#8593;</span><span><strong>Progressing</strong> — movement up in at least one</span></li>
         <li><span class="ar" aria-hidden="true">&#8594;</span><span><strong>Stable</strong> — no change, which is sometimes the win</span></li>
         <li><span class="ar" aria-hidden="true">&#9888;</span><span><strong>Stalled</strong> — goals overdue, or no movement where movement was expected</span></li>
-        <li><span class="ar" aria-hidden="true">&#8595;</span><span><strong>Needs Attention</strong> — movement down, which re-derives the plan rather than penalizing anyone</span></li>
+        <li class="down"><span class="ar" aria-hidden="true">&#8595;</span><span><strong>Needs Attention</strong> — movement down, which re-derives the plan rather than penalizing anyone</span></li>
       </ul>
-      <p class="body" style="margin-top:16px; font-size:14px">These carry no color. Red for a person moving down would make a hard month look like a failing grade, and the same rule that keeps the level ladder blue-to-green keeps this neutral. The arrow and the words do the work.</p>
+      <p class="body" style="margin-top:16px; font-size:14px">Movement down is shown in pink, never red. Red for a person moving down would make a hard month look like a failing grade; pink keeps it as visible as any gain without the alarm. The arrow and the words still do the work.</p>
     </div>
 
     <div style="margin-top:48px">
       <p class="kicker" style="margin-bottom:8px">The same record, five ways</p>
       <ul class="views">
-        <li><span class="who">The participant</span><span class="sees">Their own fifteen areas, then and now. “I was Critical in three areas six months ago. I am Independent in two of them.” Progress you can see is progress you can own.</span></li>
+        <li><span class="who">The participant</span><span class="sees">Their own fourteen areas, then and now. “I was Critical in three areas six months ago. I am Independent in two of them.” Progress you can see is progress you can own.</span></li>
         <li><span class="who">The Guide</span><span class="sees">What is improving, what is stuck, what is declining, which goals are overdue, which referrals never closed, and who needs attention today — in seconds, not in months of notes.</span></li>
         <li><span class="who">The supervisor</span><span class="sees">The team at a glance: progressing, stalled, needing support. Always shown with the mix of people each Guide is carrying — a Guide supporting six Critical areas is not underperforming one supporting Level 4s.</span></li>
         <li><span class="who">Program leadership</span><span class="sees">Movement by area, by program, by location. Time from Critical to Independent. Which goals are missed most, and where referrals stop converting.</span></li>
@@ -884,7 +892,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
 
     <div style="margin-top:48px">
       <p class="kicker" style="margin-bottom:8px">And across a community</p>
-      <p class="body" style="margin-bottom:16px; font-size:14px">The same fifteen areas aggregate. Filter by location, program, age, workforce status or time period, and an organization stops seeing one record at a time and starts seeing the community it serves.</p>
+      <p class="body" style="margin-bottom:16px; font-size:14px">The same fourteen areas aggregate. Filter by location, program, age, workforce status or time period, and an organization stops seeing one record at a time and starts seeing the community it serves.</p>
       <p class="sample"><strong>Illustrative sample.</strong> Invented distribution, shown to demonstrate the shape of the view. Not a finding, and not Guideway data.</p>
       <div class="scroll-x">
         <div class="dist" role="img" aria-label="Sample housing distribution: 14 percent Critical, 23 percent Vulnerable, 28 percent Dependent, 29 percent Independent, 6 percent Thriving">
@@ -976,8 +984,8 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
       <li><span class="src">Matthew Desmond — <em>Evicted</em>; <em>Poverty, By America</em></span><span class="use">Poverty is fragile, and people know when they are being judged. Why nothing here is a score.</span></li>
       <li><span class="src">Danielle Allen — <em>Talking to Strangers</em></span><span class="use">Trust is built in repeated respectful encounters. Why hard questions come late.</span></li>
       <li><span class="src">john a. powell — <em>Belonging without Othering</em></span><span class="use">Belonging is a structural condition, not a program. Why social connection sits alongside food and shelter.</span></li>
-      <li><span class="src">Robert Putnam — <em>Bowling Alone</em>; Robert Sampson — <em>Great American City</em></span><span class="use">Social ties predict outcomes. Why connection is one of the fifteen areas.</span></li>
-      <li><span class="src">Raj Chetty — <em>Opportunity Insights</em></span><span class="use">Neighborhood, network and early exposure predict mobility more than any single intervention. Why fifteen areas, not one number.</span></li>
+      <li><span class="src">Robert Putnam — <em>Bowling Alone</em>; Robert Sampson — <em>Great American City</em></span><span class="use">Social ties predict outcomes. Why connection is one of the fourteen areas.</span></li>
+      <li><span class="src">Raj Chetty — <em>Opportunity Insights</em></span><span class="use">Neighborhood, network and early exposure predict mobility more than any single intervention. Why fourteen areas, not one number.</span></li>
       <li><span class="src">Don Norman — <em>The Design of Everyday Things</em></span><span class="use">Design is empathy made structural. Why a bad screen is never blamed on the person using it.</span></li>
       <li><span class="src">Richard Thaler &amp; Cass Sunstein — <em>Nudge</em></span><span class="use">Defaults do more work than persuasion. Why Guideway ships configured, not empty.</span></li>
       <li><span class="src">Everett Rogers — <em>Diffusion of Innovations</em></span><span class="use">Simple message, low barrier, early wins compound. Why rollout starts with one site done properly.</span></li>
@@ -1039,15 +1047,15 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
 <script>
 const LEVELS = ["Critical","Vulnerable","Dependent","Independent","Thriving"];
 
-/* All fifteen areas are named. Only the two samples carry their question and ladder —
+/* All fourteen areas are named. Only the two samples carry their question and ladder —
    the rest of the framework content is not published. */
 const AREAS = [
- "Communication","Digital Access and Equity","Education Stability","Environmental Health",
- "Family Care","Financial Stability","Health Behavior Promotion","Health Care","Housing",
- "Mental Health","Nutrition","Safety, Violence Prevention & Environmental Safety",
+ "Communication","Education Stability","Environmental Health","Family Care",
+ "Financial Stability","Health Behavior Promotion","Health Care Access & Quality","Housing",
+ "Mental Health","Nutrition","Safety, Violence Prevention & Environmental Stability",
  "Social Connection & Support Groups","Transportation","Workforce Development"
 ];
-const PENDING = ["Digital Access and Equity"];
+const PENDING = [];
 const SAMPLES = ["Housing","Nutrition"];
 
 const D = [
