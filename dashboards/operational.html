@@ -19,7 +19,7 @@
     --slate:#6B7A8D; --slate-soft:#EDF0F3;
     --amber-text:#8A5D06; --green-text:#186A3B; --red-text:#8B1E28; --slate-text:#4A5566;
     /* Level palette — monochrome blue-to-green progression, NEVER red-to-green */
-    --lvl-1:#0F4C81; --lvl-2:#1B75BC; --lvl-3:#3E9BAF; --lvl-4:#3AAA35; --lvl-5:#0F7A2C;
+    --lvl-1:#0F4C81; --lvl-2:#1B75BC; --lvl-3:#177E8E; --lvl-4:#2C8528; --lvl-5:#0C6B26;
     /* Stage palette — same progression */
     --stg-1:#0F4C81; --stg-2:#1B75BC; --stg-3:#3AAA35; --stg-4:#0F7A2C;
   }
@@ -76,7 +76,7 @@
   .num-r{text-align:right}
 
   /* Determinant heatmap */
-  .heatmap{display:grid;grid-template-columns:200px 84px repeat(5,1fr);gap:2px;font-size:11px}
+  .heatmap{display:grid;grid-template-columns:200px 84px 76px repeat(5,1fr);gap:2px;font-size:11px}
   .heatmap .hcorner{background:var(--navy);color:white;padding:8px;font-weight:700;font-size:10px;letter-spacing:0.5px;text-transform:uppercase;border-radius:4px 0 0 0}
   .heatmap .hcol{background:var(--navy);color:white;padding:8px;text-align:center;font-weight:700;font-size:10px;letter-spacing:0.5px;text-transform:uppercase}
   .heatmap .hrow{background:#FAFBFC;padding:7px 10px;font-weight:600;color:var(--navy);font-size:11px;display:flex;align-items:center}
@@ -90,11 +90,15 @@
   /* Submissions: totals column in neutral slate, outside the level palette */
   .heatmap .hcol.sub{text-align:right}
   .heatmap .cell.sub{background:var(--slate-soft);color:var(--navy);display:flex;align-items:center;justify-content:flex-end}
+  /* Opted out: participants who declined that question. Neutral, outside the level palette */
+  .heatmap .hcol.opt{text-align:right}
+  .heatmap .cell.opt{background:#F4F6F8;color:var(--slate-text);font-weight:600;font-size:11px;display:flex;align-items:center;justify-content:flex-end}
+  .heatmap .cell.opt.zero{color:#616B78;font-weight:500}
   /* Count over percent; percent one step smaller, same color. Denominator = that row's submissions */
   .heatmap .cell b{display:block;font-size:12px;line-height:1.15}
   .heatmap .cell small{display:block;font-size:10px;font-weight:600;line-height:1.15;margin-top:1px}
-  /* WCAG AA: white on lvl-3 (3.2:1) and lvl-4 (3.0:1) fails; navy passes (4.5:1, 4.9:1). Swatches unchanged */
-  .heatmap .lvl-3,.heatmap .lvl-4{color:var(--navy)}
+  /* WCAG AA: all five swatches darkened enough that white body text passes 4.5:1
+     (L1 8.86 · L2 4.86 · L3 4.76 · L4 4.67 · L5 6.67). Every cell is white on color. */
 
   /* Level movement bars */
   .mov-row{display:grid;grid-template-columns:170px 1fr 70px;align-items:center;gap:8px;padding:5px 0;font-size:11px;border-bottom:1px solid #F0F0F0}
@@ -215,6 +219,7 @@
         <div class="heatmap">
           <div class="hcorner">Determinant</div>
           <div class="hcol sub">Submissions</div>
+          <div class="hcol opt">Opted out</div>
           <div class="hcol">1 · Critical</div>
           <div class="hcol">2 · Vulnerable</div>
           <div class="hcol">3 · Dependent</div>
@@ -222,48 +227,48 @@
           <div class="hcol">5 · Thriving</div>
 
           <div class="hrow">Communication</div>
-          <div class="cell sub">1,847</div><div class="cell lvl-1"><b>48</b><small>3%</small></div><div class="cell lvl-2"><b>213</b><small>12%</small></div><div class="cell lvl-3"><b>641</b><small>35%</small></div><div class="cell lvl-4"><b>742</b><small>40%</small></div><div class="cell lvl-5"><b>203</b><small>11%</small></div>
+          <div class="cell sub">1,847</div><div class="cell opt zero">&mdash;</div><div class="cell lvl-1"><b>48</b><small>3%</small></div><div class="cell lvl-2"><b>213</b><small>12%</small></div><div class="cell lvl-3"><b>641</b><small>35%</small></div><div class="cell lvl-4"><b>742</b><small>40%</small></div><div class="cell lvl-5"><b>203</b><small>11%</small></div>
 
           <div class="hrow">Financial Stability</div>
-          <div class="cell sub">1,847</div><div class="cell lvl-1"><b>184</b><small>10%</small></div><div class="cell lvl-2"><b>512</b><small>28%</small></div><div class="cell lvl-3"><b>697</b><small>38%</small></div><div class="cell lvl-4"><b>361</b><small>20%</small></div><div class="cell lvl-5"><b>93</b><small>5%</small></div>
+          <div class="cell sub">1,847</div><div class="cell opt zero">&mdash;</div><div class="cell lvl-1"><b>184</b><small>10%</small></div><div class="cell lvl-2"><b>512</b><small>28%</small></div><div class="cell lvl-3"><b>697</b><small>38%</small></div><div class="cell lvl-4"><b>361</b><small>20%</small></div><div class="cell lvl-5"><b>93</b><small>5%</small></div>
 
           <div class="hrow">Health Care Access & Quality</div>
-          <div class="cell sub">1,847</div><div class="cell lvl-1"><b>92</b><small>5%</small></div><div class="cell lvl-2"><b>276</b><small>15%</small></div><div class="cell lvl-3"><b>598</b><small>32%</small></div><div class="cell lvl-4"><b>641</b><small>35%</small></div><div class="cell lvl-5"><b>240</b><small>13%</small></div>
+          <div class="cell sub">1,847</div><div class="cell opt zero">&mdash;</div><div class="cell lvl-1"><b>92</b><small>5%</small></div><div class="cell lvl-2"><b>276</b><small>15%</small></div><div class="cell lvl-3"><b>598</b><small>32%</small></div><div class="cell lvl-4"><b>641</b><small>35%</small></div><div class="cell lvl-5"><b>240</b><small>13%</small></div>
 
           <div class="hrow">Nutrition</div>
-          <div class="cell sub">1,847</div><div class="cell lvl-1"><b>61</b><small>3%</small></div><div class="cell lvl-2"><b>198</b><small>11%</small></div><div class="cell lvl-3"><b>572</b><small>31%</small></div><div class="cell lvl-4"><b>741</b><small>40%</small></div><div class="cell lvl-5"><b>275</b><small>15%</small></div>
+          <div class="cell sub">1,847</div><div class="cell opt zero">&mdash;</div><div class="cell lvl-1"><b>61</b><small>3%</small></div><div class="cell lvl-2"><b>198</b><small>11%</small></div><div class="cell lvl-3"><b>572</b><small>31%</small></div><div class="cell lvl-4"><b>741</b><small>40%</small></div><div class="cell lvl-5"><b>275</b><small>15%</small></div>
 
           <div class="hrow">Family Care</div>
-          <div class="cell sub">1,847</div><div class="cell lvl-1"><b>37</b><small>2%</small></div><div class="cell lvl-2"><b>142</b><small>8%</small></div><div class="cell lvl-3"><b>489</b><small>26%</small></div><div class="cell lvl-4"><b>821</b><small>44%</small></div><div class="cell lvl-5"><b>358</b><small>19%</small></div>
+          <div class="cell sub">1,847</div><div class="cell opt zero">&mdash;</div><div class="cell lvl-1"><b>37</b><small>2%</small></div><div class="cell lvl-2"><b>142</b><small>8%</small></div><div class="cell lvl-3"><b>489</b><small>26%</small></div><div class="cell lvl-4"><b>821</b><small>44%</small></div><div class="cell lvl-5"><b>358</b><small>19%</small></div>
 
           <div class="hrow">Education Stability</div>
-          <div class="cell sub">1,847</div><div class="cell lvl-1"><b>73</b><small>4%</small></div><div class="cell lvl-2"><b>241</b><small>13%</small></div><div class="cell lvl-3"><b>612</b><small>33%</small></div><div class="cell lvl-4"><b>681</b><small>37%</small></div><div class="cell lvl-5"><b>240</b><small>13%</small></div>
+          <div class="cell sub">1,847</div><div class="cell opt zero">&mdash;</div><div class="cell lvl-1"><b>73</b><small>4%</small></div><div class="cell lvl-2"><b>241</b><small>13%</small></div><div class="cell lvl-3"><b>612</b><small>33%</small></div><div class="cell lvl-4"><b>681</b><small>37%</small></div><div class="cell lvl-5"><b>240</b><small>13%</small></div>
 
-          <div class="hrow">Mental Health <span style="font-size:9px;color:var(--red-text);margin-left:6px;">🔒 RESTRICTED</span></div>
-          <div class="cell sub">1,203</div><div class="cell restricted" style="grid-column:span 5;">Aggregate counts only &middot; Individual response content restricted per RLS &middot; See Guardrail G6</div>
+          <div class="hrow">Mental Health</div>
+          <div class="cell sub">1,203</div><div class="cell opt">644</div><div class="cell lvl-1"><b>96</b><small>8%</small></div><div class="cell lvl-2"><b>205</b><small>17%</small></div><div class="cell lvl-3"><b>433</b><small>36%</small></div><div class="cell lvl-4"><b>337</b><small>28%</small></div><div class="cell lvl-5"><b>132</b><small>11%</small></div>
 
-          <div class="hrow">Safety, Violence Prevention & Environmental Stability <span style="font-size:9px;color:var(--red-text);margin-left:6px;">🔒 RESTRICTED</span></div>
-          <div class="cell sub">1,356</div><div class="cell restricted" style="grid-column:span 5;">Aggregate counts only &middot; Individual response content restricted per RLS &middot; See Guardrail G6</div>
+          <div class="hrow">Safety, Violence Prevention & Environmental Stability</div>
+          <div class="cell sub">1,356</div><div class="cell opt">491</div><div class="cell lvl-1"><b>54</b><small>4%</small></div><div class="cell lvl-2"><b>136</b><small>10%</small></div><div class="cell lvl-3"><b>380</b><small>28%</small></div><div class="cell lvl-4"><b>529</b><small>39%</small></div><div class="cell lvl-5"><b>257</b><small>19%</small></div>
 
           <div class="hrow">Transportation</div>
-          <div class="cell sub">1,847</div><div class="cell lvl-1"><b>128</b><small>7%</small></div><div class="cell lvl-2"><b>341</b><small>18%</small></div><div class="cell lvl-3"><b>548</b><small>30%</small></div><div class="cell lvl-4"><b>598</b><small>32%</small></div><div class="cell lvl-5"><b>232</b><small>13%</small></div>
+          <div class="cell sub">1,847</div><div class="cell opt zero">&mdash;</div><div class="cell lvl-1"><b>128</b><small>7%</small></div><div class="cell lvl-2"><b>341</b><small>18%</small></div><div class="cell lvl-3"><b>548</b><small>30%</small></div><div class="cell lvl-4"><b>598</b><small>32%</small></div><div class="cell lvl-5"><b>232</b><small>13%</small></div>
 
           <div class="hrow">Environmental Health</div>
-          <div class="cell sub">1,847</div><div class="cell lvl-1"><b>54</b><small>3%</small></div><div class="cell lvl-2"><b>187</b><small>10%</small></div><div class="cell lvl-3"><b>521</b><small>28%</small></div><div class="cell lvl-4"><b>748</b><small>40%</small></div><div class="cell lvl-5"><b>337</b><small>18%</small></div>
+          <div class="cell sub">1,847</div><div class="cell opt zero">&mdash;</div><div class="cell lvl-1"><b>54</b><small>3%</small></div><div class="cell lvl-2"><b>187</b><small>10%</small></div><div class="cell lvl-3"><b>521</b><small>28%</small></div><div class="cell lvl-4"><b>748</b><small>40%</small></div><div class="cell lvl-5"><b>337</b><small>18%</small></div>
 
           <div class="hrow">Health Behavior Promotion</div>
-          <div class="cell sub">1,847</div><div class="cell lvl-1"><b>89</b><small>5%</small></div><div class="cell lvl-2"><b>294</b><small>16%</small></div><div class="cell lvl-3"><b>641</b><small>35%</small></div><div class="cell lvl-4"><b>612</b><small>33%</small></div><div class="cell lvl-5"><b>211</b><small>11%</small></div>
+          <div class="cell sub">1,847</div><div class="cell opt zero">&mdash;</div><div class="cell lvl-1"><b>89</b><small>5%</small></div><div class="cell lvl-2"><b>294</b><small>16%</small></div><div class="cell lvl-3"><b>641</b><small>35%</small></div><div class="cell lvl-4"><b>612</b><small>33%</small></div><div class="cell lvl-5"><b>211</b><small>11%</small></div>
 
           <div class="hrow">Housing</div>
-          <div class="cell sub">1,847</div><div class="cell lvl-1"><b>156</b><small>8%</small></div><div class="cell lvl-2"><b>421</b><small>23%</small></div><div class="cell lvl-3"><b>628</b><small>34%</small></div><div class="cell lvl-4"><b>462</b><small>25%</small></div><div class="cell lvl-5"><b>180</b><small>10%</small></div>
+          <div class="cell sub">1,847</div><div class="cell opt zero">&mdash;</div><div class="cell lvl-1"><b>156</b><small>8%</small></div><div class="cell lvl-2"><b>421</b><small>23%</small></div><div class="cell lvl-3"><b>628</b><small>34%</small></div><div class="cell lvl-4"><b>462</b><small>25%</small></div><div class="cell lvl-5"><b>180</b><small>10%</small></div>
 
           <div class="hrow">Social Connection & Support Groups</div>
-          <div class="cell sub">1,847</div><div class="cell lvl-1"><b>72</b><small>4%</small></div><div class="cell lvl-2"><b>248</b><small>13%</small></div><div class="cell lvl-3"><b>601</b><small>33%</small></div><div class="cell lvl-4"><b>692</b><small>37%</small></div><div class="cell lvl-5"><b>234</b><small>13%</small></div>
+          <div class="cell sub">1,847</div><div class="cell opt zero">&mdash;</div><div class="cell lvl-1"><b>72</b><small>4%</small></div><div class="cell lvl-2"><b>248</b><small>13%</small></div><div class="cell lvl-3"><b>601</b><small>33%</small></div><div class="cell lvl-4"><b>692</b><small>37%</small></div><div class="cell lvl-5"><b>234</b><small>13%</small></div>
 
           <div class="hrow">Workforce Development</div>
-          <div class="cell sub">1,847</div><div class="cell lvl-1"><b>198</b><small>11%</small></div><div class="cell lvl-2"><b>438</b><small>24%</small></div><div class="cell lvl-3"><b>641</b><small>35%</small></div><div class="cell lvl-4"><b>421</b><small>23%</small></div><div class="cell lvl-5"><b>149</b><small>8%</small></div>
+          <div class="cell sub">1,847</div><div class="cell opt zero">&mdash;</div><div class="cell lvl-1"><b>198</b><small>11%</small></div><div class="cell lvl-2"><b>438</b><small>24%</small></div><div class="cell lvl-3"><b>641</b><small>35%</small></div><div class="cell lvl-4"><b>421</b><small>23%</small></div><div class="cell lvl-5"><b>149</b><small>8%</small></div>
         </div>
-        <div style="font-size:10px;color:var(--slate);margin-top:10px;font-style:italic;">Levels rendered in a monochrome blue-to-green progression. Color never carries the only meaning &mdash; the level number is always adjacent. <b>Submissions</b> is the number of participants who answered that determinant. Each percentage is of that row&rsquo;s submissions, not of all 1,847, so a row reads &ldquo;of the people who answered Communication, 40% are at 4 &middot; Independent.&rdquo; Submissions below 1,847 means some participants skipped that question. Circumstances-not-people framing per Guardrail principle.</div>
+        <div style="font-size:10px;color:var(--slate);margin-top:10px;font-style:italic;">Levels rendered in a monochrome blue-to-green progression. Color never carries the only meaning &mdash; the level number is always adjacent. <b>Submissions</b> is the number of participants who answered that determinant; <b>Opted out</b> is the number who declined to answer it. The two sum to 1,847 on every row. Each percentage is of that row&rsquo;s submissions, not of all 1,847, so a row reads &ldquo;of the people who answered Communication, 40% are at 4 &middot; Independent.&rdquo; Circumstances-not-people framing per Guardrail principle.</div>
       </div>
     </div>
 
@@ -280,8 +285,8 @@
             <div class="mov-row"><span class="lb">Nutrition</span><div class="stack"><span class="seg-up" style="width:36%;">↑ 51</span><span class="seg-same" style="width:54%;">= 76</span><span class="seg-down" style="width:10%;">↓ 14</span></div><span class="tot">141</span></div>
             <div class="mov-row"><span class="lb">Family Care</span><div class="stack"><span class="seg-up" style="width:24%;">↑ 28</span><span class="seg-same" style="width:64%;">= 74</span><span class="seg-down" style="width:12%;">↓ 14</span></div><span class="tot">116</span></div>
             <div class="mov-row"><span class="lb">Education Stability</span><div class="stack"><span class="seg-up" style="width:29%;">↑ 39</span><span class="seg-same" style="width:57%;">= 76</span><span class="seg-down" style="width:14%;">↓ 19</span></div><span class="tot">134</span></div>
-            <div class="mov-row"><span class="lb">Mental Health 🔒</span><div class="stack"><span class="seg-up" style="width:22%;">↑ 34</span><span class="seg-same" style="width:59%;">= 91</span><span class="seg-down" style="width:19%;">↓ 29</span></div><span class="tot">154</span></div>
-            <div class="mov-row"><span class="lb">Safety, Violence Prevention & Environmental Stability 🔒</span><div class="stack"><span class="seg-up" style="width:25%;">↑ 21</span><span class="seg-same" style="width:63%;">= 53</span><span class="seg-down" style="width:12%;">↓ 10</span></div><span class="tot">84</span></div>
+            <div class="mov-row"><span class="lb">Mental Health</span><div class="stack"><span class="seg-up" style="width:22%;">↑ 34</span><span class="seg-same" style="width:59%;">= 91</span><span class="seg-down" style="width:19%;">↓ 29</span></div><span class="tot">154</span></div>
+            <div class="mov-row"><span class="lb">Safety, Violence Prevention & Environmental Stability</span><div class="stack"><span class="seg-up" style="width:25%;">↑ 21</span><span class="seg-same" style="width:63%;">= 53</span><span class="seg-down" style="width:12%;">↓ 10</span></div><span class="tot">84</span></div>
             <div class="mov-row"><span class="lb">Transportation</span><div class="stack"><span class="seg-up" style="width:26%;">↑ 44</span><span class="seg-same" style="width:57%;">= 96</span><span class="seg-down" style="width:17%;">↓ 29</span></div><span class="tot">169</span></div>
             <div class="mov-row"><span class="lb">Environmental Health</span><div class="stack"><span class="seg-up" style="width:33%;">↑ 41</span><span class="seg-same" style="width:56%;">= 70</span><span class="seg-down" style="width:11%;">↓ 14</span></div><span class="tot">125</span></div>
             <div class="mov-row"><span class="lb">Health Behavior Promotion</span><div class="stack"><span class="seg-up" style="width:30%;">↑ 46</span><span class="seg-same" style="width:56%;">= 86</span><span class="seg-down" style="width:14%;">↓ 22</span></div><span class="tot">154</span></div>
@@ -391,8 +396,8 @@
                 <tr><td>Environmental Health</td><td class="num-r">3.6</td><td class="num-r" style="color:var(--slate);">3.4</td><td class="num-r" style="color:var(--green-text);font-weight:700;">+0.2</td><td style="text-align:center;color:var(--green-text);font-weight:700;">↑</td></tr>
                 <tr><td>Nutrition</td><td class="num-r">3.7</td><td class="num-r" style="color:var(--slate);">3.5</td><td class="num-r" style="color:var(--green-text);font-weight:700;">+0.2</td><td style="text-align:center;color:var(--green-text);font-weight:700;">↑</td></tr>
                 <tr><td>Family Care</td><td class="num-r">3.8</td><td class="num-r" style="color:var(--slate);">3.7</td><td class="num-r" style="color:var(--green-text);font-weight:700;">+0.1</td><td style="text-align:center;color:var(--green-text);font-weight:700;">↑</td></tr>
-                <tr><td>Mental Health 🔒</td><td class="num-r">3.2</td><td class="num-r" style="color:var(--slate);">3.3</td><td class="num-r" style="color:var(--slate);">−0.1</td><td style="text-align:center;color:var(--slate);">→</td></tr>
-                <tr><td>Safety, Violence Prevention & Environmental Stability 🔒</td><td class="num-r">3.6</td><td class="num-r" style="color:var(--slate);">3.5</td><td class="num-r" style="color:var(--green-text);font-weight:700;">+0.1</td><td style="text-align:center;color:var(--green-text);font-weight:700;">↑</td></tr>
+                <tr><td>Mental Health</td><td class="num-r">3.2</td><td class="num-r" style="color:var(--slate);">3.3</td><td class="num-r" style="color:var(--slate);">−0.1</td><td style="text-align:center;color:var(--slate);">→</td></tr>
+                <tr><td>Safety, Violence Prevention & Environmental Stability</td><td class="num-r">3.6</td><td class="num-r" style="color:var(--slate);">3.5</td><td class="num-r" style="color:var(--green-text);font-weight:700;">+0.1</td><td style="text-align:center;color:var(--green-text);font-weight:700;">↑</td></tr>
               </tbody>
             </table>
             <div style="font-size:10px;color:var(--slate);margin-top:10px;font-style:italic;">
@@ -443,7 +448,7 @@
             <tr><td>Complete GED enrollment</td><td>Education Stability</td><td>2 · Vulnerable</td><td class="num-r">48</td><td class="num-r">72%</td><td>Local seat availability &mdash; check with 2 partner sites</td></tr>
             <tr><td>Open a checking account</td><td>Financial Stability</td><td>1 · Critical</td><td class="num-r">41</td><td class="num-r">64%</td><td>ID/documentation barrier &mdash; review upstream</td></tr>
             <tr><td>Secure reliable transportation</td><td>Transportation</td><td>2 · Vulnerable</td><td class="num-r">37</td><td class="num-r">59%</td><td>Structural &mdash; rural service gap in 3 counties</td></tr>
-            <tr><td>Complete mental-health intake</td><td>Mental Health 🔒</td><td>2 · Vulnerable</td><td class="num-r">34</td><td class="num-r">56%</td><td>Provider wait list &gt; 6 weeks</td></tr>
+            <tr><td>Complete mental-health intake</td><td>Mental Health</td><td>2 · Vulnerable</td><td class="num-r">34</td><td class="num-r">56%</td><td>Provider wait list &gt; 6 weeks</td></tr>
             <tr><td>Enroll in benefits application</td><td>Financial Stability</td><td>1 · Critical</td><td class="num-r">31</td><td class="num-r">51%</td><td>Application complexity &mdash; consider assisted intake</td></tr>
             <tr><td>Secure childcare</td><td>Family Care</td><td>2 · Vulnerable</td><td class="num-r">28</td><td class="num-r">48%</td><td>Local availability &mdash; investigate voucher pipeline</td></tr>
             <tr><td>Attend housing search workshop</td><td>Housing</td><td>2 · Vulnerable</td><td class="num-r">26</td><td class="num-r">44%</td><td>Session frequency &mdash; increase to weekly</td></tr>
