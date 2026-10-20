@@ -1096,7 +1096,7 @@ footer .wrap{display:flex; gap:20px; justify-content:space-between; flex-wrap:wr
       <div><dt>Evidence</dt><dd>None yet. No pilot results, no outcome data, no comparison group.</dd></div>
       <div><dt>Accessibility</dt><dd>Designed against WCAG 2.1 AA. No formal audit performed; no conformance claimed.</dd></div>
       <div><dt>Security</dt><dd>Microsoft Power Platform with Entra ID sign-in. Access is set by role, program and location. No third-party certification held.</dd></div>
-      <div><dt>Content review</dt><dd>Health, mental health, substance use and Feeling Safe material is under review by qualified professionals, including a domestic violence advocate. Feeling Safe is planned with a quick exit and no stored device history. A level 1 Mental Health answer shows 988 before any plan. Legal &amp; Civic Stability is held until a licensed attorney has read it.</dd></div>
+      <div><dt>Content review</dt><dd>Health, mental health, substance use and Feeling Safe material is under review by qualified professionals, including a domestic violence advocate. Feeling Safe is planned with a quick exit and no stored device history. A level 1 Mental Health answer shows 988 before any plan.</dd></div>
       <div><dt>Availability</dt><dd>Working with a small number of design partners. Not generally available.</dd></div>
     </dl>
   </div>
@@ -1158,7 +1158,7 @@ const AREAS = [
  "Social Connection","Transportation","Workforce Development",
  "Legal & Civic Stability","Essential Goods"
 ];
-const PENDING = ["Legal & Civic Stability"];
+const PENDING = [];
 const SAMPLES = ["Housing","Nutrition"];
 
 const D = [
@@ -1171,7 +1171,7 @@ AREAS.forEach(name=>{
   const li=document.createElement('li');
   li.textContent=name;
   if(SAMPLES.includes(name)) li.className='sample';
-  else if(PENDING.includes(name)){ li.className='pending'; li.textContent=name+' — in attorney review'; }
+  else if(PENDING.includes(name)){ li.className='pending'; li.textContent=name+' — in development'; }
   areasEl.appendChild(li);
 });
 
